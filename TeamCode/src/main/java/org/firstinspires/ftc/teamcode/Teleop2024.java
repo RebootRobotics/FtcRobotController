@@ -17,9 +17,9 @@ public class Teleop2024 extends LinearOpMode {
     DcMotor motorBackLeft;
     DcMotor motorFrontRight;
     DcMotor motorBackRight;
-    Servo arm;
-    Servo ElbowR;
-    Servo ElbowL;
+    //Servo arm;
+    //Servo ElbowR;
+    //Servo ElbowL;
     /*DcMotor armRight;
     DcMotor armLeft;
     double armPosition, gripPosition;
@@ -57,9 +57,9 @@ public class Teleop2024 extends LinearOpMode {
         motorBackLeft = hardwareMap.dcMotor.get("lowerLeft"); //motorBackLeft
         motorFrontRight = hardwareMap.dcMotor.get("upperRight"); //motorFrontRight
         motorBackRight = hardwareMap.dcMotor.get("lowerRight"); //motorBackRight
-        arm = hardwareMap.servo.get("arm");
-        ElbowR = hardwareMap.servo.get("ElbowR");
-        ElbowL = hardwareMap.servo.get("ElbowL");
+        //arm = hardwareMap.servo.get("arm");
+        //ElbowR = hardwareMap.servo.get("ElbowR");
+        //ElbowL = hardwareMap.servo.get("ElbowL");
         //armRight = hardwareMap.dcMotor.get("armRight"); //Calling the arm
 
 
@@ -119,18 +119,18 @@ public class Teleop2024 extends LinearOpMode {
             }
 
             if (gamepad1.x) {//arm going to low junction when a is pressed
-                ElbowR.setPosition(0.95);
+                // ElbowR.setPosition(0.95);
             } else if (gamepad1.y) {//arm going to medium junction when b is pressed
-                ElbowR.setPosition(0.15);}
-            if (gamepad1.x) {//arm going to low junction when a is pressed
-                ElbowL.setPosition(0.15);
-            } else if (gamepad1.y) {//arm going to medium junction when b is pressed
-                ElbowL.setPosition(0.95);}
+                //ElbowR.setPosition(0.15);}
+                if (gamepad1.x) {//arm going to low junction when a is pressed
+                    //ElbowL.setPosition(0.15);
+                } else if (gamepad1.y) {//arm going to medium junction when b is pressed
+                    //ElbowL.setPosition(0.95);}
 
-            if (gamepad1.a) {//arm going to low junction when a is pressed
-                arm.setPosition(0.75);
-            } else if (gamepad1.b) {//arm going to medium junction when b is pressed
-                arm.setPosition(0.55);}
+                    if (gamepad1.a) {//arm going to low junction when a is pressed
+                        //arm.setPosition(0.75);
+                    } else if (gamepad1.b) {//arm going to medium junction when b is pressed
+                        //arm.setPosition(0.55);}
 //            } else if (gamepad2.x) {//arm going to high junction when x is pressed
 //                arm.setPower(buttonpower);
 //              //  sleep(4250); // change
@@ -154,26 +154,26 @@ public class Teleop2024 extends LinearOpMode {
 */
 
 
-                // Denominator is the largest motor power (absolute value) or 1
-                // This ensures all the powers maintain the same ratio, but only when
-                // at least one is out of the range [-1, 1]
-                double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-                double frontLeftPower = (y + rx + x) / denominator;
-                double backLeftPower = -(y - rx + x) / denominator;
-                double frontRightPower = -(y - rx - x) / denominator;
-                double backRightPower = (y + rx - x) / denominator;
-                //Slower speed so that is easier to control
-                motorFrontLeft.setPower(frontLeftPower * mainPower);
-                motorBackLeft.setPower(backLeftPower * mainPower);
-                motorFrontRight.setPower(frontRightPower * mainPower);
-                motorBackRight.setPower(backRightPower * mainPower);
+                        // Denominator is the largest motor power (absolute value) or 1
+                        // This ensures all the powers maintain the same ratio, but only when
+                        // at least one is out of the range [-1, 1]
+                        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+                        double frontLeftPower = (y + rx + x) / denominator;
+                        double backLeftPower = -(y - rx + x) / denominator;
+                        double frontRightPower = -(y - rx - x) / denominator;
+                        double backRightPower = (y + rx - x) / denominator;
+                        //Slower speed so that is easier to control
+                        motorFrontLeft.setPower(frontLeftPower * mainPower);
+                        motorBackLeft.setPower(backLeftPower * mainPower);
+                        motorFrontRight.setPower(frontRightPower * mainPower);
+                        motorBackRight.setPower(backRightPower * mainPower);
 
 
-                if (gamepad2.a && apressed == false) {
+                        if (gamepad2.a && apressed == false) {
 
-                    apressed = true;
+                            apressed = true;
 
-                }
+                        }
 
 //            if(apressed==true){
 //                timer=timer+1;
@@ -216,18 +216,19 @@ public class Teleop2024 extends LinearOpMode {
 //            }
 
 
-                telemetry.update();
+                        telemetry.update();
 
 
-                telemetry.addData("Game>", "Over");
+                        telemetry.addData("Game>", "Over");
 
-                telemetry.update();
+                        telemetry.update();
 
+
+                    }
+
+
+                }
 
             }
 
-
-        }
-
-    }
-
+        }}}
