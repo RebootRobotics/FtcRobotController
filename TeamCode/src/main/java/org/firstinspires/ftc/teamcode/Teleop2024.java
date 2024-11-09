@@ -13,10 +13,10 @@ import com.qualcomm.robotcore.util.Range;
 public class Teleop2024 extends LinearOpMode {
     // Declare our motors
     // Make sure your ID's match your configuration
-    DcMotor motorFrontLeft;
-    DcMotor motorBackLeft;
-    DcMotor motorFrontRight;
-    DcMotor motorBackRight;
+    DcMotor upperLeft;
+    DcMotor lowerLeft;
+    DcMotor upperRight;
+    DcMotor lowerRight;
     //Servo arm;
     //Servo ElbowR;
     //Servo ElbowL;
@@ -29,9 +29,9 @@ public class Teleop2024 extends LinearOpMode {
     */ boolean secondHalf = false;                 // Use to hint the drivers for end game start
     final double HALF_TIME = 60.0;              // Wait this many seconds before alert for half-time
     ElapsedTime runtime = new ElapsedTime();    // Use to determine when end game is starting.
-    /*
-        static final double MOTOR_TICK_COUNT = 1120;
-        static final double MAX_POS = 1.0;     // Maximums rotational position for gripper
+
+       // static final double MOTOR_TICK_COUNT = 1120;
+        /*static final double MAX_POS = 1.0;     // Maximums rotational position for gripper
         static final double MIN_POS = 0.0;     // Minimum rotational position for gripper
         double position = MIN_POS; // Start at minimum position position  for gripper
         static final double INCREMENT = 0.01;     // amount to slew servo each CYCLE_MS cycle
@@ -53,10 +53,10 @@ public class Teleop2024 extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
 
-        motorFrontLeft = hardwareMap.dcMotor.get("upperLeft"); //motorFrontLeft
-        motorBackLeft = hardwareMap.dcMotor.get("lowerLeft"); //motorBackLeft
-        motorFrontRight = hardwareMap.dcMotor.get("upperRight"); //motorFrontRight
-        motorBackRight = hardwareMap.dcMotor.get("lowerRight"); //motorBackRight
+        upperLeft = hardwareMap.dcMotor.get("upperLeft"); //motorFrontLeft
+        lowerLeft = hardwareMap.dcMotor.get("lowerLeft"); //motorBackLeft
+        upperRight = hardwareMap.dcMotor.get("upperRight"); //motorFrontRight
+        lowerRight = hardwareMap.dcMotor.get("lowerRight"); //motorBackRight
         //arm = hardwareMap.servo.get("arm");
         //ElbowR = hardwareMap.servo.get("ElbowR");
         //ElbowL = hardwareMap.servo.get("ElbowL");
@@ -64,9 +64,10 @@ public class Teleop2024 extends LinearOpMode {
 
 
         //Reverse front motors and back right motors
-        motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-//        motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-//         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        upperLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        upperRight.setDirection(DcMotorSimple.Direction.REVERSE);
+         lowerLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+         lowerRight.setDirection(DcMotorSimple.Direction.REVERSE);
 //        motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
         //armRight.setDirection(DcMotorSimple.Direction.FORWARD);
 
@@ -87,7 +88,7 @@ public class Teleop2024 extends LinearOpMode {
         while (opModeIsActive()) {
             double y = gamepad1.left_stick_y; // Remember, this is reversed!
             double x = gamepad1.left_stick_x; // Counteract imperfect strafing
-            double rx = gamepad1.right_stick_x; //make negative if doesn't work
+            double rx = -gamepad1.right_stick_x; //make negative if doesn't work
 
             if ((runtime.seconds() > HALF_TIME) && !secondHalf) {
                 secondHalf = true;
@@ -158,15 +159,15 @@ public class Teleop2024 extends LinearOpMode {
                         // This ensures all the powers maintain the same ratio, but only when
                         // at least one is out of the range [-1, 1]
                         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-                        double frontLeftPower = (y + rx + x) / denominator;
-                        double backLeftPower = -(y - rx + x) / denominator;
-                        double frontRightPower = -(y - rx - x) / denominator;
-                        double backRightPower = (y + rx - x) / denominator;
+                        double upperLeftPower = (y + rx + x) / denominator;
+                        double lowerLeftPower = -(y - rx + x) / denominator;
+                        double upperRightPower = -(y - rx - x) / denominator;
+                        double lowerRightPower = (y + rx - x) / denominator;
                         //Slower speed so that is easier to control
-                        motorFrontLeft.setPower(frontLeftPower * mainPower);
-                        motorBackLeft.setPower(backLeftPower * mainPower);
-                        motorFrontRight.setPower(frontRightPower * mainPower);
-                        motorBackRight.setPower(backRightPower * mainPower);
+                        upperLeft.setPower(upperLeftPower * mainPower);
+                        lowerLeft.setPower(lowerLeftPower * mainPower);
+                        upperRight.setPower(upperRightPower * mainPower);
+                        lowerRight.setPower(lowerRightPower * mainPower);
 
 
                         if (gamepad2.a && apressed == false) {
