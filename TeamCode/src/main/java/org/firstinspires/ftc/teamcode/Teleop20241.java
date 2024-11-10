@@ -78,6 +78,8 @@ public class Teleop20241 extends LinearOpMode {
                 intakeClaw.setPosition(0.1);
             }
 
+            float leftTriggerValue = gamepad1.left_trigger;
+
             if (gamepad1.dpad_up) {
                 clawWrist.getPosition();
                 clawWrist.setPosition(clawWrist.getPosition()+0.1);

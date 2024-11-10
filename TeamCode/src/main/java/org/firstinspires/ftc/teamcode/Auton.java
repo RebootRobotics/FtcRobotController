@@ -11,7 +11,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 public class Auton extends LinearOpMode {
 
-    public Webcam webcam = null;
+    //public Webcam webcam = null;
 
     @Override
     public void runOpMode() throws InterruptedException{
@@ -25,7 +25,7 @@ public class Auton extends LinearOpMode {
 
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(tagProcessor)
-                .setCamera(hardwareMap.get(Webcam.class, "Webcam"))
+                //.setCamera(hardwareMap.get(Webcam.class, "Webcam"))
                 .setCameraResolution(new Size(640, 480))
                 .build();
 

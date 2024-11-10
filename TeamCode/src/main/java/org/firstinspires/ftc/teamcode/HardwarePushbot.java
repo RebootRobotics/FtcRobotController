@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 public class HardwarePushbot
 {
     /* Public OpMode members. */
-    public Webcam webcam = null;
+    //public Webcam webcam = null;
     public DcMotor  upperLeft   = null;
     public DcMotor  upperRight = null;
     public DcMotor  lowerLeft = null;
