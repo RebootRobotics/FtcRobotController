@@ -59,16 +59,16 @@ public class Teleop20241 extends LinearOpMode {
             backRightMotor.setPower(backRightPower);
 
             if (gamepad1.a) {
-                lift1.setPosition(1);
+                lift1.setPosition(-1);
             }
             else if (gamepad1.b) {
-                lift1.setPosition(0.1);
+                lift1.setPosition(0);
             }
             if (gamepad1.a) {
-                lift2.setPosition(0.1);
+                lift2.setPosition(0);
             }
             else if (gamepad1.b) {
-                lift2.setPosition(1);
+                lift2.setPosition(-1);
             }
 
             if (gamepad1.left_bumper) {
@@ -79,24 +79,26 @@ public class Teleop20241 extends LinearOpMode {
             }
 
             if (gamepad1.dpad_up) {
-                clawWrist.setPosition(1);
+                clawWrist.getPosition();
+                clawWrist.setPosition(clawWrist.getPosition()+0.1);
             }
             else if (gamepad1.dpad_down) {
-                clawWrist.setPosition(0.1);
+                clawWrist.getPosition();
+                clawWrist.setPosition(clawWrist.getPosition()-0.1);
             }
 
             if (gamepad1.dpad_left) {
-                extension1.setPosition(1);
+                extension1.setPosition(0.55);
             }
             else if (gamepad1.dpad_right) {
-                extension2.setPosition(0.1);
+                extension1.setPosition(0.35);
             }
 
             if (gamepad1.dpad_left) {
-                extension1.setPosition(0.1);
+                extension2.setPosition(0.35);
             }
             else if (gamepad1.dpad_right) {
-                extension2.setPosition(1);
+                extension2.setPosition(0.55);
             }
 
 
