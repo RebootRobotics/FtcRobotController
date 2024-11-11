@@ -24,7 +24,8 @@ public class Teleop20241 extends LinearOpMode {
         Servo lift1 = hardwareMap.servo.get("lift1");
         Servo lift2 = hardwareMap.servo.get("lift2");
         Servo intakeClaw = hardwareMap.servo.get("intakeClaw");
-        Servo clawWrist = hardwareMap.servo.get("clawWrist");
+
+//        Servo clawWrist = hardwareMap.servo.get("clawWrist");
         Servo extension1 = hardwareMap.servo.get("extension1");
         Servo extension2 = hardwareMap.servo.get("extension2");
 
@@ -81,8 +82,8 @@ public class Teleop20241 extends LinearOpMode {
             float leftTriggerValue = gamepad1.left_trigger;
             float rightTriggerValue = gamepad1.right_trigger;
 
-            clawWrist.setPosition(leftTriggerValue);
-            clawWrist.setPosition(rightTriggerValue);
+//            clawWrist.setPosition(leftTriggerValue);
+//            clawWrist.setPosition(rightTriggerValue);
             //if (gamepad1.dpad_up) {
                 //clawWrist.getPosition();
                 //clawWrist.setPosition(clawWrist.getPosition()+0.1);
