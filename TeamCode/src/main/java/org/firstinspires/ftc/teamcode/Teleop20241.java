@@ -49,7 +49,7 @@ public class Teleop20241 extends LinearOpMode {
             // but only if at least one is out of the range [-1, 1]
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double frontLeftPower = (y + x + rx) / denominator;
-            double backLeftPower = (y - x + rx) / denominator;
+            double backLeftPower = -(y - x + rx) / denominator;
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
@@ -59,7 +59,7 @@ public class Teleop20241 extends LinearOpMode {
             backRightMotor.setPower(backRightPower);
 
             if (gamepad1.a) {
-                lift1.setPosition(-1);
+                lift1.setPosition(1);
             }
             else if (gamepad1.b) {
                 lift1.setPosition(0);
@@ -68,7 +68,7 @@ public class Teleop20241 extends LinearOpMode {
                 lift2.setPosition(0);
             }
             else if (gamepad1.b) {
-                lift2.setPosition(-1);
+                lift2.setPosition(1);
             }
 
             if (gamepad1.left_bumper) {
@@ -79,15 +79,18 @@ public class Teleop20241 extends LinearOpMode {
             }
 
             float leftTriggerValue = gamepad1.left_trigger;
+            float rightTriggerValue = gamepad1.right_trigger;
 
-            if (gamepad1.dpad_up) {
-                clawWrist.getPosition();
-                clawWrist.setPosition(clawWrist.getPosition()+0.1);
-            }
-            else if (gamepad1.dpad_down) {
-                clawWrist.getPosition();
-                clawWrist.setPosition(clawWrist.getPosition()-0.1);
-            }
+            clawWrist.setPosition(leftTriggerValue);
+            clawWrist.setPosition(rightTriggerValue);
+            //if (gamepad1.dpad_up) {
+                //clawWrist.getPosition();
+                //clawWrist.setPosition(clawWrist.getPosition()+0.1);
+            //}
+            //else if (gamepad1.dpad_down) {
+                //clawWrist.getPosition();
+                //clawWrist.setPosition(clawWrist.getPosition()-0.1);
+            //}
 
             if (gamepad1.dpad_left) {
                 extension1.setPosition(0.55);
@@ -97,10 +100,10 @@ public class Teleop20241 extends LinearOpMode {
             }
 
             if (gamepad1.dpad_left) {
-                extension2.setPosition(0.35);
+                extension2.setPosition(0.45);
             }
             else if (gamepad1.dpad_right) {
-                extension2.setPosition(0.55);
+                extension2.setPosition(0.65);
             }
 
 

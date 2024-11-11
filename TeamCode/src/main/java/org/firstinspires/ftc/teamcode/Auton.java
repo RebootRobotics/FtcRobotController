@@ -4,17 +4,15 @@ import android.util.Size;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-//import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 public class Auton extends LinearOpMode {
 
-    //public Webcam webcam = null;
-
     @Override
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() {
 
         AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
                 .setDrawAxes(true)
@@ -25,7 +23,7 @@ public class Auton extends LinearOpMode {
 
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(tagProcessor)
-                //.setCamera(hardwareMap.get(Webcam.class, "Webcam"))
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam"))
                 .setCameraResolution(new Size(640, 480))
                 .build();
 
