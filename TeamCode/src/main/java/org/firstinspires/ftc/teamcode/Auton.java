@@ -54,6 +54,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+
+
 @Autonomous(name="Autonomous20241")
 public class Auton extends LinearOpMode {
 
@@ -75,6 +77,8 @@ public class Auton extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        waitForStart();
         // Initialize motors and servos
         frontLeftMotor = hardwareMap.dcMotor.get("upperLeft");
         backLeftMotor = hardwareMap.dcMotor.get("lowerLeft");
