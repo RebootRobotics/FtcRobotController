@@ -50,7 +50,7 @@ public class Teleop20241 extends LinearOpMode {
             // but only if at least one is out of the range [-1, 1]
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double frontLeftPower = (y + x + rx) / denominator;
-            double backLeftPower = -(y - x + rx) / denominator;
+            double backLeftPower = (y - x + rx) / denominator;
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
@@ -93,18 +93,19 @@ public class Teleop20241 extends LinearOpMode {
                 //clawWrist.setPosition(clawWrist.getPosition()-0.1);
             //}
 
-            if (gamepad1.dpad_left) {
-                extension1.setPosition(0.55);
+            if (gamepad1.dpad_up) {
+                extension1.setPosition(0.1);
             }
-            else if (gamepad1.dpad_right) {
-                extension1.setPosition(0.35);
+            else if (gamepad1.dpad_down) {
+                extension1.setPosition(0.7);
             }
 
-            if (gamepad1.dpad_left) {
-                extension2.setPosition(0.45);
+            if (gamepad1.dpad_up) { //extensions out when pressed up
+                extension2.setPosition(0.7);
             }
-            else if (gamepad1.dpad_right) {
-                extension2.setPosition(0.65);
+            else if (gamepad1.dpad_down) { //extension in when pressed down
+                extension2.setPosition(0.1
+                );
             }
 
 
