@@ -72,8 +72,8 @@ public class Auton extends LinearOpMode {
 
     // Movement constants (adjust as needed)
     private static final double DRIVE_POWER = 0.5;
-    private static final long STRAIGHT_DURATION_MS = 1000;
-   private static final long STRAFE_DURATION_MS = 700;
+    private static final long STRAIGHT_DURATION_MS = 500;
+    private static final long STRAFE_DURATION_MS = 700;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -143,13 +143,16 @@ public class Auton extends LinearOpMode {
         stopMotors();
     }
 
+
+
+
     // Function to place pixel on pole
     private void placePixelOnPole() throws InterruptedException {
         lift1.setPosition(1);   // Adjust position as needed to lift
         lift2.setPosition(0);   // Adjust position as needed to lift
         extension1.setPosition(0.55);  // Extend to reach the pole
         extension2.setPosition(0.45);
-        intakeClaw.setPosition(1); // Open claw to place pixel
+        intakeClaw.setPosition(1); //   claw to place pixel
         sleep(500);
     }
 
