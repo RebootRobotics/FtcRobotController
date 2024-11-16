@@ -24,7 +24,7 @@ public class Teleop20241 extends LinearOpMode {
         DcMotor VSlide1 = hardwareMap.dcMotor.get("VSlide1");
         DcMotor VSlide2 = hardwareMap.dcMotor.get("VSlide2");
 
-        Servo lift1 = hardwareMap.servo.get("lift1");
+        Servo t1 = hardwareMap.servo.get("lift1");
         Servo lift2 = hardwareMap.servo.get("lift2");
         Servo intakeClaw = hardwareMap.servo.get("intakeClaw");
 
@@ -87,11 +87,27 @@ public class Teleop20241 extends LinearOpMode {
                 lift2.setPosition(0.6);
             }
 
-            if (gamepad2.a) {
-                lift2.setPosition(0);
-            } else if (gamepad2.b) {
-                lift2.setPosition(1);
+            if (gamepad2.x) {
+                SlidePivot2.setPosition(0.1);
+            } else if (gamepad2.y) {
+                SlidePivot2.setPosition(0.6);
             }
+            if (gamepad2.dpad_right) {
+                SlidePivot1.setPosition(0.1);
+            } else if (gamepad2.dpad_left) {
+                SlidePivot1.setPosition(0.6);
+            }
+            if (gamepad2.dpad_up) {
+                LiftWrist.setPosition(0.1);
+            } else if (gamepad2.dpad_down) {
+                LiftWrist.setPosition(0.6);
+            }
+            if (gamepad2.right_bumper) {
+                VClaw.setPosition(0.1);
+            } else if (gamepad2.left_bumper) {
+                VClaw.setPosition(0.6);
+            }
+
 
             if (gamepad1.left_bumper) {
                 intakeClaw.setPosition(0.9);
