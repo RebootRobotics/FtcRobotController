@@ -69,7 +69,8 @@ public class Auton extends LinearOpMode {
     private Servo intakeClaw;
     private Servo extension1;
     private Servo extension2;
-    private Servo liftWrist;
+    private Servo slidePivot1;
+    private Servo slidePivot2;
     private Servo vClaw;
     private DcMotor vSlide1;
     private DcMotor vSlide2;
@@ -93,7 +94,8 @@ public class Auton extends LinearOpMode {
         intakeClaw = hardwareMap.servo.get("intakeClaw");
         extension1 = hardwareMap.servo.get("extension1");
         extension2 = hardwareMap.servo.get("extension2");
-        liftWrist = hardwareMap.servo.get("LiftWrist");
+        slidePivot1 = hardwareMap.servo.get("SlidePivot1");
+        slidePivot2 = hardwareMap.servo.get("SlidePivot2");
         vClaw = hardwareMap.servo.get("VClaw");
         vSlide1 = hardwareMap.dcMotor.get("VSlide1");
         vSlide2 = hardwareMap.dcMotor.get("VSlide2");
@@ -252,12 +254,14 @@ public class Auton extends LinearOpMode {
         intakeClaw.setPosition(1); // grab pixel
         lift1.setPosition(1);
         lift2.setPosition(0);
-        liftWrist.setPosition(1);
+        slidePivot1.setPosition(1);
+        slidePivot2.setPosition(0);
         vClaw.setPosition(1);
         intakeClaw.setPosition(0);
         lift1.setPosition(0);
         lift2.setPosition(1);
-        liftWrist.setPosition(0);
+        slidePivot1.setPosition(0);
+        slidePivot2.setPosition(1);
     }
 
     // Function to stop all motors
