@@ -69,6 +69,10 @@ public class Auton extends LinearOpMode {
     private Servo intakeClaw;
     private Servo extension1;
     private Servo extension2;
+    private Servo liftWrist;
+    private Servo vClaw;
+    private DcMotor vSlide1;
+    private DcMotor vSlide2;
 
     // Movement constants (adjust as needed)
     private static final double DRIVE_POWER = 0.5;
@@ -89,73 +93,81 @@ public class Auton extends LinearOpMode {
         intakeClaw = hardwareMap.servo.get("intakeClaw");
         extension1 = hardwareMap.servo.get("extension1");
         extension2 = hardwareMap.servo.get("extension2");
-
+        liftWrist = hardwareMap.servo.get("LiftWrist");
+        vClaw = hardwareMap.servo.get("VClaw");
+        vSlide1 = hardwareMap.dcMotor.get("VSlide1");
+        vSlide2 = hardwareMap.dcMotor.get("VSlide2");
         // Reverse right motors if needed
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
 
         // Wait for the game to start
-
+        waitForStart();
 
         // Move forward to approach blue pole area
-        driveForward(1, 300);
-
-        // Strafe right to align with the blue pole
-        //strafeRight(DRIVE_POWER, STRAFE_DURATION_MS);
+        driveForward(DRIVE_POWER, STRAIGHT_DURATION_MS);
 
         // Position lift and hanger to place the pixel on the blue pole
         placePixelOnPole();
 
         // Move backward to return to the area near the three lines
-        driveBackward(1, 150);
+        driveBackward(DRIVE_POWER, STRAIGHT_DURATION_MS);
 
         //Strafe right to be parallel with the submersible and parallel with the blue specimen
-        strafeRight(.7, 500);
+        strafeRight(DRIVE_POWER, STRAIGHT_DURATION_MS);
 
         //Move straight to collect specimen
-        driveForward(1, 500);
+        driveForward(DRIVE_POWER, STRAIGHT_DURATION_MS);
 
-        //Move right to be in front of the blue speciment to pick it up
-        strafeRight(.5, 100);
+        // 180 turn
+        oneEightyDegreeTurn(DRIVE_POWER, STRAIGHT_DURATION_MS);
 
-        //Move backwards to bring the specimen to the observation deck
-        driveBackward(1, 750);
+        // Use Claw
+        pickupPixel();
+
+        // 180 turn
+        oneEightyDegreeTurn(DRIVE_POWER, STRAIGHT_DURATION_MS);
+
+        // Move backwards to bring the specimen to the observation deck
+        driveBackward(DRIVE_POWER, STRAIGHT_DURATION_MS);
+
+        // drop pixel in observation zone
+        dropPixel();
+
+        // 180
+        //pick up
+        //180
+        //go backwards
+        //drop pixel in observation zone
+        //player adds clip
 
         //Turn 180 degrees so that the vertical arm can pick up specimen.
-        oneEightyDegreeTurn(1, 500);
+//        oneEightyDegreeTurn(DRIVE_POWER, STRAIGHT_DURATION_MS);
 
-        for (int i=0; i<3 i++){
-            //Move forward little to latch onto specimen provided by human player.
-            driveForward(.5, 50);
-
-            //Turn 180 degrees to push specimen into observation deck
-            oneEightyDegreeTurn(1, 500);
+        for (int i = 0; i < 3; i++) {
+            // player places clip on ground facing outside
 
             //Strafe left to align with submersible
-            strafeLeft(1, 500);
+            strafeLeft(DRIVE_POWER, STRAFE_DURATION_MS);
 
             //Go forward to be in range of the submersible
-            driveForward(.5, 200);
+            driveForward(DRIVE_POWER, STRAIGHT_DURATION_MS);
+
+            // set up pixel
+            setupPixel();
+
+            // puts thing on submersible
+            placePixelOnPole();
 
             //Move backwards a little
-            driveBackward(1, 200);
+            driveBackward(DRIVE_POWER, STRAIGHT_DURATION_MS);
 
-            //Turn 180 degrees so that the vertical arm can lift specimen from observation deck
-            oneEightyDegreeTurn(1, 500);
-
-            //Strafe left to approach the observation deck
-            strafeLeft(1, 500);
+            // go right to observation
+            strafeRight(DRIVE_POWER, STRAFE_DURATION_MS);
         }
-
-
 
         // Stop motors
         stopMotors();
-
-        // new auton
-
-
-
 
     }
 
@@ -179,6 +191,15 @@ public class Auton extends LinearOpMode {
         stopMotors();
     }
 
+    private void strafeLeft(double power, long duration) throws InterruptedException {
+        frontLeftMotor.setPower(-power);
+        backLeftMotor.setPower(power);
+        frontRightMotor.setPower(power);
+        backRightMotor.setPower(-power);
+        sleep(duration);
+        stopMotors();
+    }
+
     // Function to strafe right
     private void strafeRight(double power, long duration) throws InterruptedException {
         frontLeftMotor.setPower(power);
@@ -189,17 +210,54 @@ public class Auton extends LinearOpMode {
         stopMotors();
     }
 
-
-
+    private void oneEightyDegreeTurn(double power, long duration) throws InterruptedException {
+        frontLeftMotor.setPower(-power);
+        backLeftMotor.setPower(-power);
+        frontRightMotor.setPower(power);
+        backRightMotor.setPower(power);
+        sleep(duration);
+        stopMotors();
+    }
 
     // Function to place pixel on pole
     private void placePixelOnPole() throws InterruptedException {
-        lift1.setPosition(1);   // Adjust position as needed to lift
-        lift2.setPo sition(0);   // Adjust position as needed to lift
-        extension1.setPosition(0.55);  // Extend to reach the pole
-        extension2.setPosition(0.45);
-        intakeClaw.setPosition(1); //   claw to place pixel
+//        lift1.setPosition(1);   // Adjust position as needed to lift
+//        lift2.setPosition(0);   // Adjust position as needed to lift
+//        extension1.setPosition(0.55);  // Extend to reach the pole
+//        extension2.setPosition(0.45);
+//        intakeClaw.setPosition(1); //   claw to place pixel
+//        sleep(500);
+        vSlide1.setPower(0.5);
+        vSlide2.setPower(0.5);
         sleep(500);
+        stopMotors();
+        vClaw.setPosition(0);
+        vSlide1.setPower(-0.5);
+        vSlide2.setPower(-0.5);
+        sleep(500);
+        stopMotors();
+    }
+
+    // pick up pixel
+    private void pickupPixel() {
+        intakeClaw.setPosition(1);
+    }
+
+    private void dropPixel() {
+        intakeClaw.setPosition(0);
+    }
+
+    // function to pick up block and move it up
+    private void setupPixel() throws InterruptedException {
+        intakeClaw.setPosition(1); // grab pixel
+        lift1.setPosition(1);
+        lift2.setPosition(0);
+        liftWrist.setPosition(1);
+        vClaw.setPosition(1);
+        intakeClaw.setPosition(0);
+        lift1.setPosition(0);
+        lift2.setPosition(1);
+        liftWrist.setPosition(0);
     }
 
     // Function to stop all motors
@@ -209,20 +267,7 @@ public class Auton extends LinearOpMode {
         frontRightMotor.setPower(0);
         backRightMotor.setPower(0);
     }
-}
-private void oneEightyDegreeTurn(double power, long duration) throws InterruptedException {
-    frontLeftMotor.setPower(-power);
-    backLeftMotor.setPower(-power);
-    frontRightMotor.setPower(power);
-    backRightMotor.setPower(power);
-    sleep(duration);
-    stopMotors();
-}
-private void strafeLeft(double power, long duration) throws InterruptedException {
-    frontLeftMotor.setPower(-power);
-    backLeftMotor.setPower(power);
-    frontRightMotor.setPower(power);
-    backRightMotor.setPower(-power);
-    sleep(duration);
-    stopMotors();
+
+
+
 }

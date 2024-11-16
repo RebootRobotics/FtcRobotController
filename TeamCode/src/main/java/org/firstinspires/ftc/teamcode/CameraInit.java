@@ -29,11 +29,19 @@ public class CameraInit extends LinearOpMode {
                 .setCameraResolution(new Size(640, 480))
                 .build();
 
+        boolean webcam_attached = hardwareMap.get(WebcamName.class, "Webcam").isAttached();
+        if (webcam_attached) {
+            telemetry.addData("webcam status", "connected");
+        } else {
+            telemetry.addData("webcam status", "not connected");
+        }
+        telemetry.update();
+
         waitForStart();
 
         while (!isStopRequested() && opModeIsActive()) {
 
-            if (tagProcessor.getDetections().size() > 0) {
+            if (!tagProcessor.getDetections().isEmpty()) {
                 AprilTagDetection tag = tagProcessor.getDetections().get(0);
 
                 telemetry.addData("x", tag.ftcPose.x);

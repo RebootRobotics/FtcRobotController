@@ -64,7 +64,7 @@ public class HardwarePushbot
         clawWrist = hwMap.servo.get("clawWrist");
         extension1 = hwMap.servo.get("extension1");
         extension2 = hwMap.servo.get("extension2");
-        SlidePivot2 = hwMap.servo.get("SlidePivot2");
+//        SlidePivot2 = hwMap.servo.get("SlidePivot2");
         //ElbowR = hwMap.servo.get("ElbowR");
         //ElbowL = hwMap.servo.get("ElbowL");
 
