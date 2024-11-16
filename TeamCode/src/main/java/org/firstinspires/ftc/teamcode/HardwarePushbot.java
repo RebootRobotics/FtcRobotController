@@ -11,10 +11,12 @@ public class HardwarePushbot
 {
     /* Public OpMode members. */
     //public Webcam webcam = null;
-    public DcMotor  upperLeft   = null;
-    public DcMotor  upperRight = null;
-    public DcMotor  lowerLeft = null;
-    public DcMotor  lowerRight = null;
+    public DcMotor upperLeft   = null;
+    public DcMotor upperRight = null;
+    public DcMotor lowerLeft = null;
+    public DcMotor lowerRight = null;
+    public DcMotor VSlide1 = null;
+    public DcMotor VSlide2 = null;
     //  public DcMotor  armRight = null;
     //  public DcMotor armLeft = null;
     public Servo lift1  = null;
@@ -23,8 +25,10 @@ public class HardwarePushbot
     public Servo clawWrist  = null;
     public Servo extension1  = null;
     public Servo extension2  = null;
-    //public Servo ElbowR = null;
-    //public Servo ElbowL = null;
+    public Servo SlidePivot1 = null;
+    public Servo SlidePivot2 = null;
+    public Servo LiftWrist = null;
+    public Servo VClaw = null;
     //public Servo clawServoRight= null;
     //public Servo clawServoLeft = null;
 
@@ -56,6 +60,8 @@ public class HardwarePushbot
         upperRight = hwMap.dcMotor.get("upperRight"); //motorBackLeft
         lowerLeft = hwMap.dcMotor.get("lowerLeft"); //motorFrontRight
         lowerRight = hwMap.dcMotor.get("lowerRight"); //motorBackRight
+        VSlide1 = hwMap.dcMotor.get("VSlide1");
+        VSlide2 = hwMap.dcMotor.get("VSlide2");
         //armRight = hwMap.dcMotor.get("armRight");
         //armLeft = hwMap.dcMotor.get("armLeft");
         lift1 = hwMap.servo.get("lift1");
@@ -65,6 +71,9 @@ public class HardwarePushbot
         extension1 = hwMap.servo.get("extension1");
         extension2 = hwMap.servo.get("extension2");
         SlidePivot2 = hwMap.servo.get("SlidePivot2");
+        SlidePivot1 = hwMap.servo.get("SlidePivot1");
+        LiftWrist = hwMap.servo.get("LiftWrist");
+        VClaw = hwMap.servo.get("VClaw");
         //ElbowR = hwMap.servo.get("ElbowR");
         //ElbowL = hwMap.servo.get("ElbowL");
 
