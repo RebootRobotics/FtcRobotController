@@ -98,19 +98,65 @@ public class Auton extends LinearOpMode {
 
 
         // Move forward to approach blue pole area
-        driveForward(DRIVE_POWER, STRAIGHT_DURATION_MS);
+        driveForward(1, 300);
 
         // Strafe right to align with the blue pole
-        strafeRight(DRIVE_POWER, STRAFE_DURATION_MS);
+        //strafeRight(DRIVE_POWER, STRAFE_DURATION_MS);
 
         // Position lift and hanger to place the pixel on the blue pole
         placePixelOnPole();
 
         // Move backward to return to the area near the three lines
-        driveBackward(DRIVE_POWER, STRAIGHT_DURATION_MS);
+        driveBackward(1, 150);
+
+        //Strafe right to be parallel with the submersible and parallel with the blue specimen
+        strafeRight(.7, 500);
+
+        //Move straight to collect specimen
+        driveForward(1, 500);
+
+        //Move right to be in front of the blue speciment to pick it up
+        strafeRight(.5, 100);
+
+        //Move backwards to bring the specimen to the observation deck
+        driveBackward(1, 750);
+
+        //Turn 180 degrees so that the vertical arm can pick up specimen.
+        oneEightyDegreeTurn(1, 500);
+
+        for (int i=0; i<3 i++){
+            //Move forward little to latch onto specimen provided by human player.
+            driveForward(.5, 50);
+
+            //Turn 180 degrees to push specimen into observation deck
+            oneEightyDegreeTurn(1, 500);
+
+            //Strafe left to align with submersible
+            strafeLeft(1, 500);
+
+            //Go forward to be in range of the submersible
+            driveForward(.5, 200);
+
+            //Move backwards a little
+            driveBackward(1, 200);
+
+            //Turn 180 degrees so that the vertical arm can lift specimen from observation deck
+            oneEightyDegreeTurn(1, 500);
+
+            //Strafe left to approach the observation deck
+            strafeLeft(1, 500);
+        }
+
+
 
         // Stop motors
         stopMotors();
+
+        // new auton
+
+
+
+
     }
 
     // Function to drive forward
@@ -149,7 +195,7 @@ public class Auton extends LinearOpMode {
     // Function to place pixel on pole
     private void placePixelOnPole() throws InterruptedException {
         lift1.setPosition(1);   // Adjust position as needed to lift
-        lift2.setPosition(0);   // Adjust position as needed to lift
+        lift2.setPo sition(0);   // Adjust position as needed to lift
         extension1.setPosition(0.55);  // Extend to reach the pole
         extension2.setPosition(0.45);
         intakeClaw.setPosition(1); //   claw to place pixel
@@ -163,4 +209,20 @@ public class Auton extends LinearOpMode {
         frontRightMotor.setPower(0);
         backRightMotor.setPower(0);
     }
+}
+private void oneEightyDegreeTurn(double power, long duration) throws InterruptedException {
+    frontLeftMotor.setPower(-power);
+    backLeftMotor.setPower(-power);
+    frontRightMotor.setPower(power);
+    backRightMotor.setPower(power);
+    sleep(duration);
+    stopMotors();
+}
+private void strafeLeft(double power, long duration) throws InterruptedException {
+    frontLeftMotor.setPower(-power);
+    backLeftMotor.setPower(power);
+    frontRightMotor.setPower(power);
+    backRightMotor.setPower(-power);
+    sleep(duration);
+    stopMotors();
 }
