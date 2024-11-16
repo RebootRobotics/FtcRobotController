@@ -47,7 +47,7 @@
 //    }
 //}
 
-package org.firstinspires.ftc.teamcode;
+/*package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -124,7 +124,7 @@ public class Auton extends LinearOpMode {
         //Turn 180 degrees so that the vertical arm can pick up specimen.
         oneEightyDegreeTurn(1, 500);
 
-        for (int i=0; i<3 i++){
+        for (int i=0; i<3; i++){
             //Move forward little to latch onto specimen provided by human player.
             driveForward(.5, 50);
 
@@ -195,7 +195,7 @@ public class Auton extends LinearOpMode {
     // Function to place pixel on pole
     private void placePixelOnPole() throws InterruptedException {
         lift1.setPosition(1);   // Adjust position as needed to lift
-        lift2.setPo sition(0);   // Adjust position as needed to lift
+        lift2.setPosition(0);   // Adjust position as needed to lift
         extension1.setPosition(0.55);  // Extend to reach the pole
         extension2.setPosition(0.45);
         intakeClaw.setPosition(1); //   claw to place pixel
@@ -225,4 +225,4 @@ private void strafeLeft(double power, long duration) throws InterruptedException
     backRightMotor.setPower(-power);
     sleep(duration);
     stopMotors();
-}
+}}*/

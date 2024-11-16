@@ -43,15 +43,19 @@ public class Teleop20241 extends LinearOpMode {
         // See the note about this earlier on this page.
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        VSlide2.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         waitForStart();
 
         if (isStopRequested()) return;
 
+
         while (opModeIsActive()) {
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
             double x = gamepad1.left_stick_x; //* 1.1; // Counteract imperfect strafing
-            double rx = gamepad1.right_stick_x;
+            double rx = -gamepad1.right_stick_x;
+
 
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio,
@@ -74,28 +78,24 @@ public class Teleop20241 extends LinearOpMode {
 
             if (gamepad1.a) {
                 lift1.setPosition(0.6);
-            }
-            else if (gamepad1.b) {
+            } else if (gamepad1.b) {
                 lift1.setPosition(0.1);
             }
             if (gamepad1.a) {
                 lift2.setPosition(0.1);
-            }
-            else if (gamepad1.b) {
+            } else if (gamepad1.b) {
                 lift2.setPosition(0.6);
             }
 
             if (gamepad2.a) {
                 lift2.setPosition(0);
-            }
-            else if (gamepad2.b) {
+            } else if (gamepad2.b) {
                 lift2.setPosition(1);
             }
 
             if (gamepad1.left_bumper) {
                 intakeClaw.setPosition(0.9);
-            }
-            else if (gamepad1.right_bumper) {
+            } else if (gamepad1.right_bumper) {
                 intakeClaw.setPosition(0.1);
             }
 
@@ -105,30 +105,39 @@ public class Teleop20241 extends LinearOpMode {
             clawWrist.setPosition(leftTriggerValue);
             clawWrist.setPosition(rightTriggerValue);
             //if (gamepad1.dpad_up) {
-                //clawWrist.getPosition();
-                //clawWrist.setPosition(clawWrist.getPosition()+0.1);
+            //clawWrist.getPosition();
+            //clawWrist.setPosition(clawWrist.getPosition()+0.1);
             //}
             //else if (gamepad1.dpad_down) {
-                //clawWrist.getPosition();
-                //clawWrist.setPosition(clawWrist.getPosition()-0.1);
+            //clawWrist.getPosition();
+            //clawWrist.setPosition(clawWrist.getPosition()-0.1);
             //}
 
             if (gamepad1.dpad_up) {
                 extension1.setPosition(0.7);
-            }
-            else if (gamepad1.dpad_down) {
+            } else if (gamepad1.dpad_down) {
                 extension1.setPosition(0.1);
             }
 
             if (gamepad1.dpad_up) { //extensions out when pressed up
                 extension2.setPosition(0.1);
-            }
-            else if (gamepad1.dpad_down) { //extension in when pressed down
+            } else if (gamepad1.dpad_down) { //extension in when pressed down
                 extension2.setPosition(0.7);
             }
 
+            if (gamepad2.y){
+                VSlide1.setPower(0.4);
+                VSlide2.setPower(-0.4);}
+              else if (!gamepad2.y) {
+                VSlide1.setPower(0);
+                VSlide2.setPower(0);
+            }
+
+            if(gamepad2.x){
+                VSlide1.setPower(-0.4);
+                VSlide2.setPower(0.4);
+            }
 
 
         }
-    }
-}
+    }}
