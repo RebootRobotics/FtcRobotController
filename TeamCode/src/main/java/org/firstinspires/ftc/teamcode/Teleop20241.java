@@ -24,7 +24,7 @@ public class Teleop20241 extends LinearOpMode {
         DcMotor VSlide1 = hardwareMap.dcMotor.get("VSlide1");
         DcMotor VSlide2 = hardwareMap.dcMotor.get("VSlide2");
 
-        Servo t1 = hardwareMap.servo.get("lift1");
+        Servo lift1 = hardwareMap.servo.get("lift1");
         Servo lift2 = hardwareMap.servo.get("lift2");
         Servo intakeClaw = hardwareMap.servo.get("intakeClaw");
 
@@ -87,30 +87,30 @@ public class Teleop20241 extends LinearOpMode {
                 lift2.setPosition(0.6);
             }
 
-            if (gamepad2.x) {
+            if (gamepad2.dpad_left) {
                 SlidePivot2.setPosition(0.1);
-            } else if (gamepad2.y) {
-                SlidePivot2.setPosition(0.6);
+            } else if (gamepad2.dpad_right) {
+                SlidePivot2.setPosition(0.45);
             }
             if (gamepad2.dpad_right) {
-                SlidePivot1.setPosition(0.1);
+                SlidePivot1.setPosition(0.45);
             } else if (gamepad2.dpad_left) {
-                SlidePivot1.setPosition(0.6);
+                SlidePivot1.setPosition(0.1);
             }
             if (gamepad2.dpad_up) {
                 LiftWrist.setPosition(0.1);
             } else if (gamepad2.dpad_down) {
-                LiftWrist.setPosition(0.6);
+                LiftWrist.setPosition(0.3);
             }
             if (gamepad2.right_bumper) {
                 VClaw.setPosition(0.1);
             } else if (gamepad2.left_bumper) {
-                VClaw.setPosition(0.6);
+                VClaw.setPosition(0.5);
             }
 
 
             if (gamepad1.left_bumper) {
-                intakeClaw.setPosition(0.9);
+                intakeClaw.setPosition(0.5);
             } else if (gamepad1.right_bumper) {
                 intakeClaw.setPosition(0.1);
             }
