@@ -80,36 +80,21 @@ public class Teleop20241 extends LinearOpMode {
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(backRightPower);
 
-//            clawWrist.setPosition(0.5);
-            //VSlide1.setPower(1);
-            //VSlide2.setPower(-1);
-            //Make So that there are preset heights
-
-
-//            if (gamepad1.a) {
-//                lift1.setPosition(1.0);
-//            } else if (gamepad1.b) {
-//                lift1.setPosition(0.025);
-//            }
-//            //init vals: 0.1, 0.6
-//            if (gamepad1.a) {
-//                lift2.setPosition(0.1);
-//            } else if (gamepad1.b) {
-//                lift2.setPosition(1.9);
-//            }
             if (gamepad1.a) {
-                lift1.setPosition(1.5);
+                lift1.setPosition(1);
             } else if (gamepad1.b) {
-                lift1.setPosition(0.0);
+                lift1.setPosition(0);
             }
             //init vals: 0.1, 0.6
             if (gamepad1.a) {
-                lift2.setPosition(0.05);
+                lift2.setPosition(0.15);
             } else if (gamepad1.b) {
-                lift2.setPosition(1.0);
+                lift2.setPosition(0.37);
+            } else if (gamepad1.dpad_left) {
+                lift2.setPosition(0.5);
             }
 
-            if (gamepad1.x) {
+            /*if (gamepad1.x) {
                 lift1.setPosition(0.6);
                 lift2.setPosition(0.1);
                 sleep(2000);
@@ -117,28 +102,12 @@ public class Teleop20241 extends LinearOpMode {
                 sleep(2000);
                 intakeClaw.setPosition(-0.5);
 //                transfer();
-            }
-//liftwrist and vclaw switch
-            if (gamepad2.dpad_left) {
-                SlidePivot2.setPosition(0.9);
-            } else if (gamepad2.dpad_right) {
-                SlidePivot2.setPosition(0.1);
-            }
-            if (gamepad2.dpad_right) {
-                SlidePivot1.setPosition(0.9);
-            } else if (gamepad2.dpad_left) {
-                SlidePivot1.setPosition(0.1);
-            }
-            if (gamepad2.dpad_up) {
-                VClaw.setPosition(0.5);
-            } else if (gamepad2.dpad_down) {
-                VClaw.setPosition(0.1);
-            }
+            } */
             //LIFTWRIST AND VCLAW ARE SWITCH
             if (gamepad2.right_bumper) {
-                LiftWrist.setPosition(0.1);
+                VClaw.setPosition(0.1);
             } else if (gamepad2.left_bumper) {
-                LiftWrist.setPosition(0.5);
+                VClaw.setPosition(0.7);
             }
             //vclaw == liftwrist here bc of server confusion for some reason (keep for now)
             //suposed to be claw in black (outtake claw)
@@ -147,22 +116,10 @@ public class Teleop20241 extends LinearOpMode {
             if (gamepad1.left_bumper) {
                 intakeClaw.setPosition(0.9);
             } else if (gamepad1.right_bumper) {
-                intakeClaw.setPosition(0.1);
+                intakeClaw.setPosition(0.4);
             }
-
-//            float leftTriggerValue = gamepad1.left_trigger;
-//            float rightTriggerValue = gamepad1.right_trigger;
-//
-//            clawWrist.setPosition(leftTriggerValue);
-//            clawWrist.setPosition(rightTriggerValue);
-            //if (gamepad1.dpad_up) {
-            //clawWrist.getPosition();
-            //clawWrist.setPosition(clawWrist.getPosition()+0.1);
-            //}
-            //else if (gamepad1.dpad_down) {
-            //clawWrist.getPosition();
-            //clawWrist.setPosition(clawWrist.getPosition()-0.1);
-            //}
+            if (gamepad2.y){
+                LiftWrist.setPosition(0.7);}
 
             if (gamepad1.dpad_up) {
                 extension1.setPosition(0.7);
@@ -176,25 +133,17 @@ public class Teleop20241 extends LinearOpMode {
                 extension2.setPosition(0.7);
             }
 
-//            if (gamepad2.y){
-//                VSlide1.setPower(0.4);
-//                VSlide2.setPower(-0.4);}
-//              else if (!gamepad2.y) {
-//                VSlide1.setPower(0);
-//                VSlide2.setPower(0);
-//            }
-//
-//            if(gamepad2.x){
-//                VSlide1.setPower(-0.4);
-//                VSlide2.setPower(0.4);
-//            }
-            if (gamepad2.y){
-                VSlide1.setPower(-0.6);
-                VSlide2.setPower(0.6);}
 //reverse
             else if(gamepad2.x){
-                VSlide1.setPower(0.9);
-                VSlide2.setPower(-0.9);
+                LiftWrist.setPosition(0.3);
+            }
+
+//            float leftTriggerValue = gamepad1.left_trigger;
+//            float rightTriggerValue = gamepad1.right_trigger;
+//
+//            clawWrist.setPosition(leftTriggerValue);
+//            clawWrist.setPosition(rightTriggerValue);
+
             }
             //positive
 
@@ -212,4 +161,4 @@ public class Teleop20241 extends LinearOpMode {
 //        intakeClaw.setPosition(-0.5);
 //        }
 
-    }
+
