@@ -70,15 +70,15 @@ public class Teleop20241 extends LinearOpMode {
             // but only if at least one is out of the range [-1, 1]
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double frontLeftPower = (y + x + rx) / denominator;
-            double backLeftPower = (y - x + rx)*0.8 / denominator;
+            double backLeftPower = (y - x + rx) / denominator;
             double frontRightPower = (y - x - rx) / denominator;
-            double backRightPower = (y + x - rx)*0.8 / denominator;
+            double backRightPower = (y + x - rx) / denominator;
 
 
-            frontLeftMotor.setPower(frontLeftPower*0.8);
-            backLeftMotor.setPower(backLeftPower*0.8);
-            frontRightMotor.setPower(frontRightPower*0.8);
-            backRightMotor.setPower(backRightPower*0.8);
+            frontLeftMotor.setPower(frontLeftPower*0.6);
+            backLeftMotor.setPower(backLeftPower*0.6);
+            frontRightMotor.setPower(frontRightPower*0.6);
+            backRightMotor.setPower(backRightPower*0.6);
 
             if (gamepad1.b) {
                 intakeLift1.setPosition(1);
@@ -110,14 +110,19 @@ public class Teleop20241 extends LinearOpMode {
             } else if (gamepad1.dpad_right) {
                 outtakeClaw.setPosition(0.7);
             }
-
             if (gamepad1.right_bumper) {
+                outtakeClaw.setPosition(0.7);
+                sleep(400);
+                outtakeClaw.setPosition(0.1);
+            }
+
+            if (gamepad1.left_bumper) {
                 outtakeLift1.setPosition(0);
                 outtakeLift2.setPosition(1);
             }
-            if (gamepad1.left_bumper) {
-                outtakeLift1.setPosition(1);
-                outtakeLift2.setPosition(0);
+            if (gamepad1.b) {
+                outtakeLift1.setPosition(0.95);
+                outtakeLift2.setPosition(0.05);
             }
 
             if (gamepad1.a) {
@@ -125,6 +130,12 @@ public class Teleop20241 extends LinearOpMode {
             } else if (gamepad1.x) {
                 sleep(100);
                 intakeClaw.setPosition(0.4);
+            }
+            if (gamepad1.right_bumper) {
+                intakeClaw.setPosition(0.43);
+            }
+            if (gamepad1.left_bumper) {
+                intakeClaw.setPosition(0.9);
             }
 
             if (gamepad1.a) {
@@ -155,11 +166,12 @@ public class Teleop20241 extends LinearOpMode {
                 VSlide2.setPower(0);
             }
 
-            if (gamepad1.left_bumper) {
-                outtakeWrist.setPosition(0);
+            if (gamepad1.b) {
+                outtakeWrist.setPosition(0.1);
                 //lift wrist is outtake wrist
             }
             if (gamepad1.right_bumper) {
+                sleep(500);
                 outtakeWrist.setPosition(0.3);
             }
 
