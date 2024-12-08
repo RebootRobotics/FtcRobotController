@@ -19,12 +19,13 @@ public class Teleop2024 extends LinearOpMode {
 
         Servo intakeClaw = hardwareMap.servo.get("intakeClaw");
 //        Servo intakeWrist = hardwareMap.servo.get("clawWrist");
-        Servo intakeLift = hardwareMap.servo.get("lift2"); // lift 1 and 2
+        Servo intakeLift1 = hardwareMap.servo.get("lift1"); // lift 1 and 2
+        Servo intakeLift2 = hardwareMap.servo.get("lift2");
 
         Servo outtakeClaw = hardwareMap.servo.get("VClaw");
         Servo outtakeWrist = hardwareMap.servo.get("LiftWrist");
-//        Servo outtakeLift1 = hardwareMap.servo.get("SlidePivot1");
-//        Servo outtakeLift2 = hardwareMap.servo.get("SlidePivot2");
+        Servo outtakeLift1 = hardwareMap.servo.get("SlidePivot1");
+        Servo outtakeLift2 = hardwareMap.servo.get("SlidePivot2");
         DcMotor vslide1 = hardwareMap.dcMotor.get("VSlide1");
         DcMotor vslide2 = hardwareMap.dcMotor.get("VSlide2");
 
@@ -64,12 +65,38 @@ public class Teleop2024 extends LinearOpMode {
 
             // right buttons
             if (gamepad1.a) { // pick up
-                intakeClaw.setPosition(1);
+                intakeClaw.setPosition(0.9);
+//                intakeLift2.setPosition(0);
+//                intakeLift2.setPosition(1);
+//                outtakeWrist.setPosition(0);
             }
-            if (gamepad1.b) { // release
-                intakeClaw.setPosition(0);
+            if (gamepad1.x) { // release
+                intakeClaw.setPosition(0.4);
+//                intakeLift2.setPosition(1);
+//                intakeLift2.setPosition(0);
+//                outtakeWrist.setPosition(0.3);
             }
-            if (gamepad1.x) { // transfer
+            if (gamepad1.b) {
+                sleep(400);
+                intakeClaw.setPosition(0.9);
+            }
+
+            //the bigger intake/lift on intake
+            if (gamepad1.b) {
+                intakeLift1.setPosition(1);
+            } else if (gamepad1.a) {
+                intakeLift1.setPosition(0.1);
+            }
+            //init vals: 0.1, 0.6
+            //the smaller wrist/lift on intake
+            if (gamepad1.b) {
+                intakeLift2.setPosition(0.15);
+            } else if (gamepad1.a) {
+                intakeLift2.setPosition(0.42);
+            } else if (gamepad1.x) {
+                intakeLift2.setPosition(0.5);
+            }
+           // if (gamepad1.b) { // transfer
                 // already picked up
                 // turn intake arm around
                 // open outtake claw
@@ -78,27 +105,74 @@ public class Teleop2024 extends LinearOpMode {
                 // release with intake claw
                 // turn outtake arm around
                 // turn intake arm around
-            }
-            if (gamepad1.y) { // drop or hang
+//                outtakeLift1.setPosition(0);
+//                outtakeLift2.setPosition(1);
+//                sleep(2000);
+               // outtakeLift1.setPosition(1);
+                //outtakeLift2.setPosition(0);
+            //}
+            //outtake claw code commented out for now
+            /*if (gamepad1.y) { // drop or hang
                 outtakeClaw.setPosition(1);
                 sleep(500);
                 outtakeClaw.setPosition(0);
+//                outtakeLift1.setPosition(1);
+//                outtakeLift2.setPosition(0);
+            }*/
+            // outtake claw
+            /*if (gamepad1.right_bumper) {
+                outtakeClaw.setPosition(0.1);
+            } else if (gamepad1.left_bumper) {
+                outtakeClaw.setPosition(0.7);
+            }*/
+            if (gamepad1.b) {
+                outtakeClaw.setPosition(0.7);
+                sleep(400);
+                outtakeClaw.setPosition(0.1);
             }
 
+            //vc
+            //intake claw
+            if (gamepad1.a) {
+                intakeClaw.setPosition(0.9);
+            } else if (gamepad1.x) {
+                sleep(100);
+                intakeClaw.setPosition(0.4);
+            }
             // dpad - vslide and extension
             if (gamepad1.dpad_up) {
                 // vslide up
+                vslide1.setPower(0.5);
+                vslide2.setPower(-0.5);
+                sleep(500);
+                vslide1.setPower(0);
+                vslide2.setPower(0);
             }
             if (gamepad1.dpad_down) {
-                // vslide down
+                vslide1.setPower(-0.5);
+                vslide2.setPower(0.5);
+                sleep(500);
+                vslide1.setPower(0);
+                vslide2.setPower(0);
             }
-            if (gamepad1.dpad_left) {
+            /*if (gamepad1.dpad_left) {
                 extension1.setPosition(0);
-                extension2.setPosition(1);
+//                extension2.setPosition(1);
             }
             if (gamepad1.dpad_right) {
                 extension1.setPosition(1);
-                extension2.setPosition(0);
+//                extension2.setPosition(0);
+            }*/
+            if (gamepad1.a) {
+                extension1.setPosition(0.7);
+            } else if (gamepad1.b) {
+                extension1.setPosition(0.1);
+            }
+
+            if (gamepad1.a) { //extensions out
+                extension2.setPosition(0.1);
+            } else if (gamepad1.b) { //extension in
+                extension2.setPosition(0.7);
             }
         }
     }

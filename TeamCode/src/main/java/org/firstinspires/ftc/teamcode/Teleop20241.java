@@ -31,17 +31,17 @@ public class Teleop20241 extends LinearOpMode {
         DcMotor VSlide1 = hardwareMap.dcMotor.get("VSlide1");
         DcMotor VSlide2 = hardwareMap.dcMotor.get("VSlide2");
 
-        Servo lift1 = hardwareMap.servo.get("lift1");
-        Servo lift2 = hardwareMap.servo.get("lift2");
+        Servo intakeLift1 = hardwareMap.servo.get("lift1");
+        Servo intakeLift2 = hardwareMap.servo.get("lift2");
         Servo intakeClaw = hardwareMap.servo.get("intakeClaw");
 
-        Servo clawWrist = hardwareMap.servo.get("clawWrist");
+        //Servo clawWrist = hardwareMap.servo.get("clawWrist");
         Servo extension1 = hardwareMap.servo.get("extension1");
         Servo extension2 = hardwareMap.servo.get("extension2");
-        Servo SlidePivot2 = hardwareMap.servo.get("SlidePivot2");
-        Servo SlidePivot1 = hardwareMap.servo.get("SlidePivot1");
-        Servo LiftWrist = hardwareMap.servo.get("LiftWrist");
-        Servo VClaw = hardwareMap.servo.get("VClaw");
+        Servo outtakeLift1 = hardwareMap.servo.get("SlidePivot2");
+        Servo outtakeLift2 = hardwareMap.servo.get("SlidePivot1");
+        Servo outtakeWrist = hardwareMap.servo.get("LiftWrist");
+        Servo outtakeClaw = hardwareMap.servo.get("VClaw");
 //
 //
 //        // Reverse the right side motors. This may be wrong for your setup.
@@ -50,7 +50,7 @@ public class Teleop20241 extends LinearOpMode {
 //        // See the note about this earlier on this page.
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        VSlide2.setDirection(DcMotorSimple.Direction.REVERSE);
+        //VSlide2.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeClaw.setPosition(0.8);
 //        clawWrist.setPosition(0.0);
 
@@ -70,28 +70,29 @@ public class Teleop20241 extends LinearOpMode {
             // but only if at least one is out of the range [-1, 1]
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double frontLeftPower = (y + x + rx) / denominator;
-            double backLeftPower = (y - x + rx) / denominator;
+            double backLeftPower = (y - x + rx)*0.8 / denominator;
             double frontRightPower = (y - x - rx) / denominator;
-            double backRightPower = (y + x - rx) / denominator;
+            double backRightPower = (y + x - rx)*0.8 / denominator;
 
 
-            frontLeftMotor.setPower(frontLeftPower);
-            backLeftMotor.setPower(backLeftPower);
-            frontRightMotor.setPower(frontRightPower);
-            backRightMotor.setPower(backRightPower);
+            frontLeftMotor.setPower(frontLeftPower*0.8);
+            backLeftMotor.setPower(backLeftPower*0.8);
+            frontRightMotor.setPower(frontRightPower*0.8);
+            backRightMotor.setPower(backRightPower*0.8);
 
-            if (gamepad1.a) {
-                lift1.setPosition(1);
-            } else if (gamepad1.b) {
-                lift1.setPosition(0);
+            if (gamepad1.b) {
+                intakeLift1.setPosition(1);
+            } else if (gamepad1.a) {
+                intakeLift1.setPosition(0.1);
             }
             //init vals: 0.1, 0.6
-            if (gamepad1.a) {
-                lift2.setPosition(0.15);
-            } else if (gamepad1.b) {
-                lift2.setPosition(0.37);
-            } else if (gamepad1.dpad_left) {
-                lift2.setPosition(0.5);
+            if (gamepad1.b) {
+                intakeLift2.setPosition(0.15);
+            } else if (gamepad1.a) {
+                intakeLift2.setPosition(0.42);
+            } else if (gamepad1.x) {
+                intakeLift2.setPosition(0.5);
+                //intakeLift2 is intake claw rn
             }
 
             /*if (gamepad1.x) {
@@ -104,38 +105,62 @@ public class Teleop20241 extends LinearOpMode {
 //                transfer();
             } */
             //LIFTWRIST AND VCLAW ARE SWITCH
-            if (gamepad2.right_bumper) {
-                VClaw.setPosition(0.1);
-            } else if (gamepad2.left_bumper) {
-                VClaw.setPosition(0.7);
+            if (gamepad1.dpad_left) {
+                outtakeClaw.setPosition(0.1);
+            } else if (gamepad1.dpad_right) {
+                outtakeClaw.setPosition(0.7);
             }
-            //vclaw == liftwrist here bc of server confusion for some reason (keep for now)
-            //suposed to be claw in black (outtake claw)
 
-
+            if (gamepad1.right_bumper) {
+                outtakeLift1.setPosition(0);
+                outtakeLift2.setPosition(1);
+            }
             if (gamepad1.left_bumper) {
+                outtakeLift1.setPosition(1);
+                outtakeLift2.setPosition(0);
+            }
+
+            if (gamepad1.a) {
                 intakeClaw.setPosition(0.9);
-            } else if (gamepad1.right_bumper) {
+            } else if (gamepad1.x) {
+                sleep(100);
                 intakeClaw.setPosition(0.4);
             }
-            if (gamepad2.y){
-                LiftWrist.setPosition(0.7);}
 
-            if (gamepad1.dpad_up) {
+            if (gamepad1.a) {
                 extension1.setPosition(0.7);
-            } else if (gamepad1.dpad_down) {
+            } else if (gamepad1.b) {
                 extension1.setPosition(0.1);
             }
 
-            if (gamepad1.dpad_up) { //extensions out when pressed up
+            if (gamepad1.a) { //extensions out when pressed up
                 extension2.setPosition(0.1);
-            } else if (gamepad1.dpad_down) { //extension in when pressed down
+            } else if (gamepad1.b) { //extension in when pressed down
                 extension2.setPosition(0.7);
             }
 
-//reverse
-            else if(gamepad2.x){
-                LiftWrist.setPosition(0.3);
+            if (gamepad1.dpad_up) {
+                // vslide up
+                VSlide1.setPower(0.5);
+                VSlide2.setPower(-0.5);
+                sleep(500);
+                VSlide1.setPower(0);
+                VSlide2.setPower(0);
+            }
+            if (gamepad1.dpad_down) {
+                VSlide1.setPower(-0.5);
+                VSlide2.setPower(0.5);
+                sleep(500);
+                VSlide1.setPower(0);
+                VSlide2.setPower(0);
+            }
+
+            if (gamepad1.left_bumper) {
+                outtakeWrist.setPosition(0);
+                //lift wrist is outtake wrist
+            }
+            if (gamepad1.right_bumper) {
+                outtakeWrist.setPosition(0.3);
             }
 
 //            float leftTriggerValue = gamepad1.left_trigger;
