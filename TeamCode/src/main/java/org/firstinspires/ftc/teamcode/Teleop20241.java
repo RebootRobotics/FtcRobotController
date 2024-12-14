@@ -115,8 +115,10 @@ public class Teleop20241 extends LinearOpMode {
                 sleep(400);
                 outtakeClaw.setPosition(0.1);
             }
+            
 
             if (gamepad1.left_bumper) {
+                sleep(300);
                 outtakeLift1.setPosition(0);
                 outtakeLift2.setPosition(1);
             }
@@ -152,16 +154,16 @@ public class Teleop20241 extends LinearOpMode {
 
             if (gamepad1.dpad_up) {
                 // vslide up
-                VSlide1.setPower(0.5);
-                VSlide2.setPower(-0.5);
-                sleep(500);
+                VSlide1.setPower(1 );
+                VSlide2.setPower(-1);
+                sleep(200);
                 VSlide1.setPower(0);
                 VSlide2.setPower(0);
             }
             if (gamepad1.dpad_down) {
-                VSlide1.setPower(-0.5);
-                VSlide2.setPower(0.5);
-                sleep(500);
+                VSlide1.setPower(-1);
+                VSlide2.setPower(1);
+                sleep(200);
                 VSlide1.setPower(0);
                 VSlide2.setPower(0);
             }
