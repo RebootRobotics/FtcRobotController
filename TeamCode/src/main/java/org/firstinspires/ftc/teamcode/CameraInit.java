@@ -16,43 +16,45 @@ public class CameraInit extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
-                .setDrawAxes(true)
-                .setDrawCubeProjection(true)
-                .setDrawTagID(true)
-               .setDrawTagOutline(true)
-                .build();
-
-        VisionPortal visionPortal = new VisionPortal.Builder()
-                .addProcessor(tagProcessor)
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam"))
-                .setCameraResolution(new Size(640, 480))
-                .build();
-
-        boolean webcam_attached = hardwareMap.get(WebcamName.class, "Webcam").isAttached();
-        if (webcam_attached) {
-            telemetry.addData("webcam status", "connected");
-        } else {
-            telemetry.addData("webcam status", "not connected");
-        }
-        telemetry.update();
-
         waitForStart();
 
-        while (!isStopRequested() && opModeIsActive()) {
-
-            if (!tagProcessor.getDetections().isEmpty()) {
-                AprilTagDetection tag = tagProcessor.getDetections().get(0);
-
-                telemetry.addData("x", tag.ftcPose.x);
-                telemetry.addData("y", tag.ftcPose.y);
-                telemetry.addData("z", tag.ftcPose.z);
-                telemetry.addData("pitch", tag.ftcPose.pitch);
-                telemetry.addData("roll", tag.ftcPose.roll);
-                telemetry.addData("yaw", tag.ftcPose.yaw);
-
-                telemetry.update();
-            }
-        }
+//        AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
+//                .setDrawAxes(true)
+//                .setDrawCubeProjection(true)
+//                .setDrawTagID(true)
+//               .setDrawTagOutline(true)
+//                .build();
+//
+//        VisionPortal visionPortal = new VisionPortal.Builder()
+//                .addProcessor(tagProcessor)
+//                .setCamera(hardwareMap.get(WebcamName.class, "Webcam"))
+//                .setCameraResolution(new Size(640, 480))
+//                .build();
+//
+//        boolean webcam_attached = hardwareMap.get(WebcamName.class, "Webcam").isAttached();
+//        if (webcam_attached) {
+//            telemetry.addData("webcam status", "connected");
+//        } else {
+//            telemetry.addData("webcam status", "not connected");
+//        }
+//        telemetry.update();
+//
+//        waitForStart();
+//
+//        while (!isStopRequested() && opModeIsActive()) {
+//
+//            if (!tagProcessor.getDetections().isEmpty()) {
+//                AprilTagDetection tag = tagProcessor.getDetections().get(0);
+//
+//                telemetry.addData("x", tag.ftcPose.x);
+//                telemetry.addData("y", tag.ftcPose.y);
+//                telemetry.addData("z", tag.ftcPose.z);
+//                telemetry.addData("pitch", tag.ftcPose.pitch);
+//                telemetry.addData("roll", tag.ftcPose.roll);
+//                telemetry.addData("yaw", tag.ftcPose.yaw);
+//
+//                telemetry.update();
+//            }
+//        }
     }
 }

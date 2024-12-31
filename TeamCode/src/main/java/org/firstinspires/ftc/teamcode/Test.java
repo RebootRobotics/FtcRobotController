@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import java.security.cert.TrustAnchor;
 
-@TeleOp(name="Teleop2024")
-public class Teleop2024 extends LinearOpMode {
+@TeleOp(name="Test2024")
+public class Test extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         // configure all motors and servos
@@ -20,14 +20,15 @@ public class Teleop2024 extends LinearOpMode {
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("upperRight");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("lowerRight");
 
-        DcMotor activeIntake = hardwareMap.dcMotor.get("activeIntake");
-        Servo intakeStopper = hardwareMap.servo.get("stopper");
-        Servo intakeLift1 = hardwareMap.servo.get("lift1");
-        Servo intakeLift2 = hardwareMap.servo.get("lift2");
+        DcMotor activeIntake = hardwareMap.dcMotor.get("");
+        Servo intakeLift1 = hardwareMap.servo.get("lift2");
+        Servo intakeLift2 = hardwareMap.servo.get("");
+        Servo intakeStopper = hardwareMap.servo.get("");
         Servo extension1 = hardwareMap.servo.get("extension1");
         Servo extension2 = hardwareMap.servo.get("extension2");
 
         Servo outtakeClaw = hardwareMap.servo.get("VClaw");
+        Servo outtakeWrist = hardwareMap.servo.get("LiftWrist");
         Servo outtakeLift1 = hardwareMap.servo.get("SlidePivot1");
         Servo outtakeLift2 = hardwareMap.servo.get("SlidePivot2");
         DcMotor vslide1 = hardwareMap.dcMotor.get("VSlide1");
@@ -38,24 +39,20 @@ public class Teleop2024 extends LinearOpMode {
         if (isStopRequested()) return;
 
         // define all constants
-//        boolean FORWARD = true;
+        boolean FORWARD = true;
         double SPEED_MODIFIER = 0.6;
 
-//        boolean INTAKE_UP = true;
-        double INTAKE_POWER = 0.5;
-        long INTAKE_DURATION = 500;
-        double RELEASE_POWER = 0.5;
-        long RELEASE_DURATION = 500;
-
+        double ACTIVE_INTAKE_POWER = 0.5;
+        long ACTIVE_INTAKE_DURATION = 1;
         double VSLIDE_POWER = 1;
         long VSLIDE_DURATION = 200;
 
-        double INTAKE_LIFT1_UP = 0;
-        double INTAKE_LIFT2_UP = 1;
-        double INTAKE_LIFT1_DOWN = 1;
-        double INTAKE_LIFT2_DOWN = 0;
-        double INTAKE_STOPPER_UP = 1;
+        double INTAKE_LIFT1_DEFAULT = 0;
+        double INTAKE_LIFT2_DEFAULT = 1;
+        double INTAKE_LIFT1_PICKUP = 1;
+        double INTAKE_LIFT2_PICKUP = 0;
         double INTAKE_STOPPER_DOWN = 0;
+        double INTAKE_STOPPER_UP = 1;
         double EXTENSION1_IN = 0.1;
         double EXTENSION1_OUT = 0.7;
         double EXTENSION2_IN = 0.7;
@@ -63,6 +60,9 @@ public class Teleop2024 extends LinearOpMode {
 
         double OUTTAKE_CLAW_CLOSED = 0.3;
         double OUTTAKE_CLAW_OPENED = 0.7;
+        double OUTTAKE_WRIST_DEFAULT = 0.1;
+        double OUTTAKE_WRIST_TRANSFER = 0.1;
+        double OUTTAKE_WRIST_LOADED = 0.4;
         double OUTTAKE_LIFT1_UP = 0.95;
         double OUTTAKE_LIFT2_UP = 0.05;
         double OUTTAKE_LIFT1_DOWN = 0.15;
@@ -72,14 +72,13 @@ public class Teleop2024 extends LinearOpMode {
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        intakeLift1.setPosition(INTAKE_LIFT1_UP);
-        intakeLift2.setPosition(INTAKE_LIFT2_UP);
         extension1.setPosition(EXTENSION1_IN);
         extension2.setPosition(EXTENSION2_IN);
 
         outtakeClaw.setPosition(OUTTAKE_CLAW_CLOSED);
-        outtakeLift1.setPosition(OUTTAKE_LIFT1_UP);
-        outtakeLift2.setPosition(OUTTAKE_LIFT2_UP);
+//        outtakeLift1.setPosition(OUTTAKE_LIFT1_UP);
+//        outtakeLift2.setPosition(OUTTAKE_LIFT2_UP);
+        outtakeWrist.setPosition(OUTTAKE_WRIST_DEFAULT);
 
         while (opModeIsActive() & !isStopRequested()) {
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
@@ -95,32 +94,36 @@ public class Teleop2024 extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
-            frontLeftMotor.setPower(frontLeftPower*SPEED_MODIFIER);
-            backLeftMotor.setPower(backLeftPower*SPEED_MODIFIER);
-            frontRightMotor.setPower(frontRightPower*SPEED_MODIFIER);
-            backRightMotor.setPower(backRightPower*SPEED_MODIFIER);
+            if (FORWARD) {
+                frontLeftMotor.setPower(frontLeftPower*SPEED_MODIFIER);
+                frontRightMotor.setPower(frontRightPower*SPEED_MODIFIER);
+                backLeftMotor.setPower(backLeftPower*SPEED_MODIFIER);
+                backRightMotor.setPower(backRightPower*SPEED_MODIFIER);
+            } else {
+                backRightMotor.setPower(backRightPower*SPEED_MODIFIER);
+                backLeftMotor.setPower(backLeftPower*SPEED_MODIFIER);
+                frontRightMotor.setPower(frontRightPower*SPEED_MODIFIER);
+                frontLeftMotor.setPower(frontLeftPower*SPEED_MODIFIER);
+            }
 
             // right buttons
-            if (gamepad1.a) { // pick up
-                intakeLift1.setPosition(INTAKE_LIFT1_DOWN);
-                intakeLift2.setPosition(INTAKE_LIFT2_DOWN);
+            if (gamepad1.a) { // intake down
+                intakeLift1.setPosition(INTAKE_LIFT1_PICKUP);
+                intakeLift2.setPosition(INTAKE_LIFT2_PICKUP);
             }
-            if (gamepad1.b) { // toggle intake lift
-                intakeLift1.setPosition(INTAKE_LIFT1_UP);
-                intakeLift2.setPosition(INTAKE_LIFT2_UP);
+            if (gamepad1.b) { // intake up
+                intakeLift1.setPosition(INTAKE_LIFT1_DEFAULT);
+                intakeLift2.setPosition(INTAKE_LIFT2_DEFAULT);
             }
             if (gamepad1.x) { // transfer
                 extension1.setPosition(EXTENSION1_IN);
                 extension2.setPosition(EXTENSION2_IN);
-                intakeLift1.setPosition(INTAKE_LIFT1_UP);
-                intakeLift2.setPosition(INTAKE_LIFT2_UP);
+                intakeLift1.setPosition(INTAKE_LIFT1_DEFAULT);
+                intakeLift2.setPosition(INTAKE_LIFT2_DEFAULT);
                 intakeStopper.setPosition(INTAKE_STOPPER_DOWN);
-//                outtakeLift1.setPosition(OUTTAKE_LIFT1_DOWN);
-//                outtakeLift2.setPosition(OUTTAKE_LIFT2_DOWN);
-//                outtakeClaw.setPosition(OUTTAKE_CLAW_CLOSED);
-//                sleep(250);
-//                outtakeLift1.setPosition(OUTTAKE_LIFT1_UP);
-//                outtakeLift2.setPosition(OUTTAKE_LIFT2_UP);
+                // outtake claw down
+                outtakeLift1.setPosition(OUTTAKE_LIFT1_DOWN);
+                outtakeLift2.setPosition(OUTTAKE_LIFT2_DOWN);
             }
             if (gamepad1.y) { // drop or hang
                 outtakeClaw.setPosition(OUTTAKE_CLAW_OPENED);
@@ -152,18 +155,25 @@ public class Teleop2024 extends LinearOpMode {
                 extension2.setPosition(EXTENSION2_OUT);
             }
 
-            // bumper - active intake
-            if (gamepad1.left_bumper) { // intake
+            if (gamepad1.left_bumper) { // pick up
                 intakeStopper.setPosition(INTAKE_STOPPER_UP);
-                activeIntake.setPower(INTAKE_POWER);
-                sleep(INTAKE_DURATION);
+                activeIntake.setPower(ACTIVE_INTAKE_POWER);
+                sleep(ACTIVE_INTAKE_DURATION);
                 activeIntake.setPower(0);
             }
             if (gamepad1.right_bumper) { // release
-                intakeStopper.setPosition(INTAKE_STOPPER_DOWN);
-                activeIntake.setPower(-RELEASE_POWER);
-                sleep(RELEASE_DURATION);
+                activeIntake.setPower(-ACTIVE_INTAKE_POWER);
+                sleep(ACTIVE_INTAKE_DURATION);
                 activeIntake.setPower(0);
+            }
+
+            // gamepad2
+            if (gamepad2.right_bumper) {
+                if (FORWARD) {
+                    FORWARD = false;
+                } else {
+                    FORWARD = true;
+                }
             }
 
         }

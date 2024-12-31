@@ -51,6 +51,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -59,215 +60,105 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous(name="Autonomous20241")
 public class Auton extends LinearOpMode {
 
-    // Declare motors and servos
-    private DcMotor frontLeftMotor;
-    private DcMotor backLeftMotor;
-    private DcMotor frontRightMotor;
-    private DcMotor backRightMotor;
-    private Servo lift1;
-    private Servo lift2;
-    private Servo intakeClaw;
-    private Servo extension1;
-    private Servo extension2;
-    private Servo liftWrist;
-    private Servo vClaw;
-    private DcMotor vSlide1;
-    private DcMotor vSlide2;
-
-    // Movement constants (adjust as needed)
-    private static final double DRIVE_POWER = 0.5;
-    private static final long STRAIGHT_DURATION_MS = 500;
-    private static final long STRAFE_DURATION_MS = 700;
-
     @Override
     public void runOpMode() throws InterruptedException {
 
-        waitForStart();
-        // Initialize motors and servos
-        frontLeftMotor = hardwareMap.dcMotor.get("upperLeft");
-        backLeftMotor = hardwareMap.dcMotor.get("lowerLeft");
-        frontRightMotor = hardwareMap.dcMotor.get("upperRight");
-        backRightMotor = hardwareMap.dcMotor.get("lowerRight");
-        lift1 = hardwareMap.servo.get("lift1");
-        lift2 = hardwareMap.servo.get("lift2");
-        intakeClaw = hardwareMap.servo.get("intakeClaw");
-        extension1 = hardwareMap.servo.get("extension1");
-        extension2 = hardwareMap.servo.get("extension2");
-        liftWrist = hardwareMap.servo.get("LiftWrist");
-        vClaw = hardwareMap.servo.get("VClaw");
-        vSlide1 = hardwareMap.dcMotor.get("VSlide1");
-        vSlide2 = hardwareMap.dcMotor.get("VSlide2");
-        // Reverse right motors if needed
-        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
+        // Declare our motors
+        // Make sure your ID's match your configuration
+        // configure all motors and servos
+        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("upperLeft");
+        DcMotor backLeftMotor = hardwareMap.dcMotor.get("lowerLeft");
+        DcMotor frontRightMotor = hardwareMap.dcMotor.get("upperRight");
+        DcMotor backRightMotor = hardwareMap.dcMotor.get("lowerRight");
 
-        // Wait for the game to start
-        waitForStart();
+        Servo intakeWrist = hardwareMap.servo.get("lift1"); // rotate wrist
+        Servo intakeLift = hardwareMap.servo.get("lift2"); // rotate arm
+        Servo intakeClaw = hardwareMap.servo.get("intakeClaw");
+        Servo clawWrist = hardwareMap.servo.get("clawWrist");
+        Servo extension1 = hardwareMap.servo.get("extension1");
+        Servo extension2 = hardwareMap.servo.get("extension2");
 
-        // Move forward to approach blue pole area
-        driveForward(DRIVE_POWER, STRAIGHT_DURATION_MS);
+        Servo outtakeLift1 = hardwareMap.servo.get("SlidePivot2");
+        Servo outtakeLift2 = hardwareMap.servo.get("SlidePivot1");
+        Servo outtakeWrist = hardwareMap.servo.get("LiftWrist");
+        Servo outtakeClaw = hardwareMap.servo.get("VClaw");
+        DcMotor vslide1 = hardwareMap.dcMotor.get("VSlide1");
+        DcMotor vslide2 = hardwareMap.dcMotor.get("VSlide2");
 
-        // Position lift and hanger to place the pixel on the blue pole
-        placePixelOnPole();
+        // define all constants
+        double SPEED_MODIFIER = 0.6;
+        double VSLIDE_POWER = 1;
+        long VSLIDE_DURATION = 200;
 
-        // Move backward to return to the area near the three lines
-        driveBackward(DRIVE_POWER, STRAIGHT_DURATION_MS);
+        double INTAKE_CLAW_CLOSED = 0.4;
+        double INTAKE_CLAW_OPENED = 0.9;
+        double CLAW_WRIST_STRAIGHT = 0;
+        double CLAW_WRIST_SIDEWAYS = 0.3;
+        double INTAKE_WRIST_DOWN = 0; // lift 1
+        double INTAKE_WRIST_UP = 0.6;
+        double INTAKE_WRIST_READY = 0.42; // lift 2
+        double INTAKE_WRIST_PICKUP = 0.5;
+        double INTAKE_WRIST_TRANSFER = 0.13;
+        double EXTENSION1_IN = 0.1;
+        double EXTENSION1_OUT = 0.7;
+        double EXTENSION2_IN = 0.7;
+        double EXTENSION2_OUT = 0.1;
 
-        //Strafe right to be parallel with the submersible and parallel with the blue specimen
-        strafeRight(DRIVE_POWER, STRAIGHT_DURATION_MS);
+        double OUTTAKE_CLAW_CLOSED = 0.3;
+        double OUTTAKE_CLAW_OPENED = 0.7;
+        double OUTTAKE_WRIST_DEFAULT = 0.1;
+        double OUTTAKE_LIFT1_UP = 0.95;
+        double OUTTAKE_LIFT2_UP = 0.05;
+        double OUTTAKE_LIFT1_DOWN = 0.15;
+        double OUTTAKE_LIFT2_DOWN = 0.85;
 
-        //Move straight to collect specimen
-        driveForward(DRIVE_POWER, STRAIGHT_DURATION_MS);
+        // default positions and init
+        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        // 180 turn
-        oneEightyDegreeTurn(DRIVE_POWER, STRAIGHT_DURATION_MS);
+        intakeWrist.setPosition(0.1);
+        intakeLift.setPosition(0);
+        intakeClaw.setPosition(0.9);
+        extension1.setPosition(EXTENSION1_IN);
+        extension2.setPosition(EXTENSION2_IN);
 
-        // Use Claw
-        pickupPixel();
-
-        // 180 turn
-        oneEightyDegreeTurn(DRIVE_POWER, STRAIGHT_DURATION_MS);
-
-        // Move backwards to bring the specimen to the observation deck
-        driveBackward(DRIVE_POWER, STRAIGHT_DURATION_MS);
-
-        // drop pixel in observation zone
-        dropPixel();
-
-        // 180
-        //pick up
-        //180
-        //go backwards
-        //drop pixel in observation zone
-        //player adds clip
-
-        //Turn 180 degrees so that the vertical arm can pick up specimen.
-//        oneEightyDegreeTurn(DRIVE_POWER, STRAIGHT_DURATION_MS);
-
-        for (int i = 0; i < 3; i++) {
-            // player places clip on ground facing outside
-
-            //Strafe left to align with submersible
-            strafeLeft(DRIVE_POWER, STRAFE_DURATION_MS);
-
-            //Go forward to be in range of the submersible
-            driveForward(DRIVE_POWER, STRAIGHT_DURATION_MS);
-
-            // set up pixel
-            setupPixel();
-
-            // puts thing on submersible
-            placePixelOnPole();
-
-            //Move backwards a little
-            driveBackward(DRIVE_POWER, STRAIGHT_DURATION_MS);
-
-            // go right to observation
-            strafeRight(DRIVE_POWER, STRAFE_DURATION_MS);
-        }
-
-        // Stop motors
-        stopMotors();
-
-    }
-
-    // Function to drive forward
-    private void driveForward(double power, long duration) throws InterruptedException {
-        frontLeftMotor.setPower(power);
-        backLeftMotor.setPower(power);
-        frontRightMotor.setPower(power);
-        backRightMotor.setPower(power);
-        sleep(duration);
-        stopMotors();
-    }
-
-    // Function to drive backward
-    private void driveBackward(double power, long duration) throws InterruptedException {
-        frontLeftMotor.setPower(-power);
-        backLeftMotor.setPower(-power);
-        frontRightMotor.setPower(-power);
-        backRightMotor.setPower(-power);
-        sleep(duration);
-        stopMotors();
-    }
-
-    private void strafeLeft(double power, long duration) throws InterruptedException {
-        frontLeftMotor.setPower(-power);
-        backLeftMotor.setPower(power);
-        frontRightMotor.setPower(power);
-        backRightMotor.setPower(-power);
-        sleep(duration);
-        stopMotors();
-    }
-
-    // Function to strafe right
-    private void strafeRight(double power, long duration) throws InterruptedException {
-        frontLeftMotor.setPower(power);
-        backLeftMotor.setPower(-power);
-        frontRightMotor.setPower(-power);
-        backRightMotor.setPower(power);
-        sleep(duration);
-        stopMotors();
-    }
-
-    private void oneEightyDegreeTurn(double power, long duration) throws InterruptedException {
-        frontLeftMotor.setPower(-power);
-        backLeftMotor.setPower(-power);
-        frontRightMotor.setPower(power);
-        backRightMotor.setPower(power);
-        sleep(duration);
-        stopMotors();
-    }
-
-    // Function to place pixel on pole
-    private void placePixelOnPole() throws InterruptedException {
-//        lift1.setPosition(1);   // Adjust position as needed to lift
-//        lift2.setPosition(0);   // Adjust position as needed to lift
-//        extension1.setPosition(0.55);  // Extend to reach the pole
-//        extension2.setPosition(0.45);
-//        intakeClaw.setPosition(1); //   claw to place pixel
-//        sleep(500);
-        vSlide1.setPower(0.5);
-        vSlide2.setPower(0.5);
+        outtakeClaw.setPosition(OUTTAKE_CLAW_CLOSED);
         sleep(500);
-        stopMotors();
-        vClaw.setPosition(0);
-        vSlide1.setPower(-0.5);
-        vSlide2.setPower(-0.5);
-        sleep(500);
-        stopMotors();
-    }
+        outtakeLift1.setPosition(OUTTAKE_LIFT1_UP);
+        outtakeLift2.setPosition(OUTTAKE_LIFT2_UP);
+        outtakeWrist.setPosition(OUTTAKE_WRIST_DEFAULT);
 
-    // pick up pixel
-    private void pickupPixel() {
-        intakeClaw.setPosition(1);
-    }
+        waitForStart();
 
-    private void dropPixel() {
-        intakeClaw.setPosition(0);
-    }
-
-    // function to pick up block and move it up
-    private void setupPixel() throws InterruptedException {
-        intakeClaw.setPosition(1); // grab pixel
-        lift1.setPosition(1);
-        lift2.setPosition(0);
-        liftWrist.setPosition(1);
-        vClaw.setPosition(1);
-        intakeClaw.setPosition(0);
-        lift1.setPosition(0);
-        lift2.setPosition(1);
-        liftWrist.setPosition(0);
-    }
-
-    // Function to stop all motors
-    private void stopMotors() {
+        // insert auton here
+        frontLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        backRightMotor.setPower(0.5);
+        sleep(650);
         frontLeftMotor.setPower(0);
-        backLeftMotor.setPower(0);
         frontRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
         backRightMotor.setPower(0);
+        sleep(100);
+        vslide1.setPower(-1);
+        vslide2.setPower(1);
+        sleep(1000);
+        vslide1.setPower(0);
+        vslide2.setPower(0);
+        sleep(100);
+        outtakeClaw.setPosition(0.1);
+        sleep(200);
+        outtakeClaw.setPosition(0.9);
+        sleep(200);
+        vslide1.setPower(-1);
+        vslide2.setPower(1);
+        sleep(1000);
+        vslide1.setPower(0);
+        vslide2.setPower(0);
+        frontLeftMotor.setPower(-0.5);
+        frontRightMotor.setPower(-0.5);
+        backLeftMotor.setPower(-0.5);
+        backRightMotor.setPower(-0.5);
     }
-
-
-
 }
