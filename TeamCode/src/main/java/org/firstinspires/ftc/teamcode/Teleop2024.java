@@ -41,32 +41,32 @@ public class Teleop2024 extends LinearOpMode {
 //        boolean FORWARD = true;
         double SPEED_MODIFIER = 0.6;
 
-//        boolean INTAKE_UP = true;
+        boolean INTAKE_UP = true;
         double INTAKE_POWER = 0.5;
-        long INTAKE_DURATION = 500;
-        double RELEASE_POWER = 0.5;
-        long RELEASE_DURATION = 500;
+        long INTAKE_DURATION = 250;
+        double RELEASE_POWER = 0.8;
+        long RELEASE_DURATION = 250;
 
         double VSLIDE_POWER = 1;
-        long VSLIDE_DURATION = 200;
+        long VSLIDE_DURATION = 100;
 
         double INTAKE_LIFT1_UP = 0;
         double INTAKE_LIFT2_UP = 1;
-        double INTAKE_LIFT1_DOWN = 1;
-        double INTAKE_LIFT2_DOWN = 0;
-        double INTAKE_STOPPER_UP = 1;
+        double INTAKE_LIFT1_DOWN = 0.6;
+        double INTAKE_LIFT2_DOWN = 0.4;
+        double INTAKE_STOPPER_UP = 0.5;
         double INTAKE_STOPPER_DOWN = 0;
-        double EXTENSION1_IN = 0.1;
-        double EXTENSION1_OUT = 0.7;
-        double EXTENSION2_IN = 0.7;
-        double EXTENSION2_OUT = 0.1;
+        double EXTENSION1_IN = 0.35;
+        double EXTENSION1_OUT = 0;
+        double EXTENSION2_IN = 0.65;
+        double EXTENSION2_OUT = 1;
 
-        double OUTTAKE_CLAW_CLOSED = 0.3;
-        double OUTTAKE_CLAW_OPENED = 0.7;
-        double OUTTAKE_LIFT1_UP = 0.95;
-        double OUTTAKE_LIFT2_UP = 0.05;
-        double OUTTAKE_LIFT1_DOWN = 0.15;
-        double OUTTAKE_LIFT2_DOWN = 0.85;
+        double OUTTAKE_CLAW_CLOSED = 0.6;
+        double OUTTAKE_CLAW_OPENED = 1;
+        double OUTTAKE_LIFT1_UP = 1;
+        double OUTTAKE_LIFT2_UP = 0;
+        double OUTTAKE_LIFT1_DOWN = 0;
+        double OUTTAKE_LIFT2_DOWN = 1;
 
         // default positions and init
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -77,9 +77,9 @@ public class Teleop2024 extends LinearOpMode {
         extension1.setPosition(EXTENSION1_IN);
         extension2.setPosition(EXTENSION2_IN);
 
-        outtakeClaw.setPosition(OUTTAKE_CLAW_CLOSED);
-        outtakeLift1.setPosition(OUTTAKE_LIFT1_UP);
-        outtakeLift2.setPosition(OUTTAKE_LIFT2_UP);
+        outtakeClaw.setPosition(OUTTAKE_CLAW_OPENED);
+        outtakeLift1.setPosition(OUTTAKE_LIFT1_DOWN);
+        outtakeLift2.setPosition(OUTTAKE_LIFT2_DOWN);
 
         while (opModeIsActive() & !isStopRequested()) {
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
@@ -94,11 +94,11 @@ public class Teleop2024 extends LinearOpMode {
             double backLeftPower = (y - x + rx) / denominator;
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
-
-            frontLeftMotor.setPower(frontLeftPower*SPEED_MODIFIER);
-            backLeftMotor.setPower(backLeftPower*SPEED_MODIFIER);
-            frontRightMotor.setPower(frontRightPower*SPEED_MODIFIER);
-            backRightMotor.setPower(backRightPower*SPEED_MODIFIER);
+            // reverse direction
+            backRightMotor.setPower(-frontLeftPower*SPEED_MODIFIER);
+            backLeftMotor.setPower(-frontRightPower*SPEED_MODIFIER);
+            frontRightMotor.setPower(-backLeftPower*SPEED_MODIFIER);
+            frontLeftMotor.setPower(-backRightPower*SPEED_MODIFIER);
 
             // right buttons
             if (gamepad1.a) { // pick up
@@ -110,17 +110,18 @@ public class Teleop2024 extends LinearOpMode {
                 intakeLift2.setPosition(INTAKE_LIFT2_UP);
             }
             if (gamepad1.x) { // transfer
+                outtakeLift1.setPosition(OUTTAKE_LIFT1_DOWN);
+                outtakeLift2.setPosition(OUTTAKE_LIFT2_DOWN);
+                outtakeClaw.setPosition(OUTTAKE_CLAW_OPENED);
                 extension1.setPosition(EXTENSION1_IN);
                 extension2.setPosition(EXTENSION2_IN);
                 intakeLift1.setPosition(INTAKE_LIFT1_UP);
                 intakeLift2.setPosition(INTAKE_LIFT2_UP);
                 intakeStopper.setPosition(INTAKE_STOPPER_DOWN);
-//                outtakeLift1.setPosition(OUTTAKE_LIFT1_DOWN);
-//                outtakeLift2.setPosition(OUTTAKE_LIFT2_DOWN);
-//                outtakeClaw.setPosition(OUTTAKE_CLAW_CLOSED);
-//                sleep(250);
-//                outtakeLift1.setPosition(OUTTAKE_LIFT1_UP);
-//                outtakeLift2.setPosition(OUTTAKE_LIFT2_UP);
+                outtakeClaw.setPosition(OUTTAKE_CLAW_CLOSED);
+                sleep(1000);
+                outtakeLift1.setPosition(OUTTAKE_LIFT1_UP);
+                outtakeLift2.setPosition(OUTTAKE_LIFT2_UP);
             }
             if (gamepad1.y) { // drop or hang
                 outtakeClaw.setPosition(OUTTAKE_CLAW_OPENED);

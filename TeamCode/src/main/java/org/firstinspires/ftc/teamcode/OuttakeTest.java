@@ -20,17 +20,17 @@ public class OuttakeTest extends LinearOpMode {
                 outtakeLift1.setPosition(0);
             }
             if (gamepad1.b) {
-                outtakeLift1.setPosition(0.5);
+                outtakeLift1.setPosition(1);
             }
             if (gamepad1.x) {
                 outtakeLift2.setPosition(1);
             }
             if (gamepad1.y) {
-                outtakeLift2.setPosition(0.5);
+                outtakeLift2.setPosition(0);
             }
 
             if (gamepad1.dpad_left) {
-                outtakeClaw.setPosition(0);
+                outtakeClaw.setPosition(0.6);
             }
             if (gamepad1.dpad_right) {
                 outtakeClaw.setPosition(1);

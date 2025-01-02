@@ -42,10 +42,10 @@ public class DriveTest extends LinearOpMode {
                 backRightMotor.setPower(backRightPower*SPEED_MODIFIER);
 
             } else {
-                double frontLeftPower = (y + x - rx) / denominator;
-                double backLeftPower = (y - x - rx) / denominator;
-                double frontRightPower = (y - x + rx) / denominator;
-                double backRightPower = (y + x + rx) / denominator;
+                double frontLeftPower = (y + x + rx) / denominator;
+                double backLeftPower = (y - x + rx) / denominator;
+                double frontRightPower = (y - x - rx) / denominator;
+                double backRightPower = (y + x - rx) / denominator;
                 backRightMotor.setPower(-frontLeftPower*SPEED_MODIFIER);
                 backLeftMotor.setPower(-frontRightPower*SPEED_MODIFIER);
                 frontRightMotor.setPower(-backLeftPower*SPEED_MODIFIER);
