@@ -30,27 +30,24 @@ public class DriveTest extends LinearOpMode {
             double rx = -gamepad1.right_stick_x;
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+            double frontLeftPower, backLeftPower, frontRightPower, backRightPower;
 
             if (FORWARD) {
-                double frontLeftPower = (y + x + rx) / denominator;
-                double backLeftPower = (y - x + rx) / denominator;
-                double frontRightPower = (y - x - rx) / denominator;
-                double backRightPower = (y + x - rx) / denominator;
-                frontLeftMotor.setPower(frontLeftPower*SPEED_MODIFIER);
-                backLeftMotor.setPower(backLeftPower*SPEED_MODIFIER);
-                frontRightMotor.setPower(frontRightPower*SPEED_MODIFIER);
-                backRightMotor.setPower(backRightPower*SPEED_MODIFIER);
-
+                frontLeftPower = -((y + x - rx) / denominator);
+                backLeftPower = -((y - x - rx) / denominator);
+                frontRightPower = -((y - x + rx) / denominator);
+                backRightPower = -((y + x + rx) / denominator);
             } else {
-                double frontLeftPower = (y + x + rx) / denominator;
-                double backLeftPower = (y - x + rx) / denominator;
-                double frontRightPower = (y - x - rx) / denominator;
-                double backRightPower = (y + x - rx) / denominator;
-                backRightMotor.setPower(-frontLeftPower*SPEED_MODIFIER);
-                backLeftMotor.setPower(-frontRightPower*SPEED_MODIFIER);
-                frontRightMotor.setPower(-backLeftPower*SPEED_MODIFIER);
-                frontLeftMotor.setPower(-backRightPower*SPEED_MODIFIER);
+                frontLeftPower = (y + x + rx) / denominator;
+                backLeftPower = (y - x + rx) / denominator;
+                frontRightPower = (y - x - rx) / denominator;
+                backRightPower = (y + x - rx) / denominator;
             }
+
+            frontLeftMotor.setPower(frontLeftPower*SPEED_MODIFIER);
+            backLeftMotor.setPower(backLeftPower*SPEED_MODIFIER);
+            frontRightMotor.setPower(frontRightPower*SPEED_MODIFIER);
+            backRightMotor.setPower(backRightPower*SPEED_MODIFIER);
 
             if (gamepad1.a) {
                 FORWARD = !FORWARD;

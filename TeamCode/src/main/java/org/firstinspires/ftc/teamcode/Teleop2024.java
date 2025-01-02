@@ -38,7 +38,7 @@ public class Teleop2024 extends LinearOpMode {
         if (isStopRequested()) return;
 
         // define all constants
-//        boolean FORWARD = true;
+        boolean FORWARD = true;
         double SPEED_MODIFIER = 0.6;
 
         boolean INTAKE_UP = true;
@@ -86,37 +86,51 @@ public class Teleop2024 extends LinearOpMode {
             double x = gamepad1.left_stick_x; //* 1.1; // Counteract imperfect strafing
             double rx = -gamepad1.right_stick_x;
 
-            // Denominator is the largest motor power (absolute value) or 1
-            // This ensures all the powers maintain the same ratio,
-            // but only if at least one is out of the range [-1, 1]
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            double frontLeftPower = (y + x + rx) / denominator;
-            double backLeftPower = (y - x + rx) / denominator;
-            double frontRightPower = (y - x - rx) / denominator;
-            double backRightPower = (y + x - rx) / denominator;
-            // reverse direction
-            backRightMotor.setPower(-frontLeftPower*SPEED_MODIFIER);
-            backLeftMotor.setPower(-frontRightPower*SPEED_MODIFIER);
-            frontRightMotor.setPower(-backLeftPower*SPEED_MODIFIER);
-            frontLeftMotor.setPower(-backRightPower*SPEED_MODIFIER);
+            double frontLeftPower, backLeftPower, frontRightPower, backRightPower;
+
+            if (FORWARD) {
+                frontLeftPower = -((y + x - rx) / denominator);
+                backLeftPower = -((y - x - rx) / denominator);
+                frontRightPower = -((y - x + rx) / denominator);
+                backRightPower = -((y + x + rx) / denominator);
+            } else {
+                frontLeftPower = (y + x + rx) / denominator;
+                backLeftPower = (y - x + rx) / denominator;
+                frontRightPower = (y - x - rx) / denominator;
+                backRightPower = (y + x - rx) / denominator;
+            }
+
+            frontLeftMotor.setPower(frontLeftPower*SPEED_MODIFIER);
+            backLeftMotor.setPower(backLeftPower*SPEED_MODIFIER);
+            frontRightMotor.setPower(frontRightPower*SPEED_MODIFIER);
+            backRightMotor.setPower(backRightPower*SPEED_MODIFIER);
 
             // right buttons
             if (gamepad1.a) { // pick up
-                intakeLift1.setPosition(INTAKE_LIFT1_DOWN);
-                intakeLift2.setPosition(INTAKE_LIFT2_DOWN);
+                INTAKE_UP = !INTAKE_UP;
+                sleep(100);
+                if (INTAKE_UP) {
+                    intakeLift1.setPosition(INTAKE_LIFT1_DOWN);
+                    intakeLift2.setPosition(INTAKE_LIFT2_DOWN);
+                } else {
+                    intakeLift1.setPosition(INTAKE_LIFT1_UP);
+                    intakeLift2.setPosition(INTAKE_LIFT2_UP);
+                }
             }
             if (gamepad1.b) { // toggle intake lift
-                intakeLift1.setPosition(INTAKE_LIFT1_UP);
-                intakeLift2.setPosition(INTAKE_LIFT2_UP);
+                FORWARD = !FORWARD;
             }
             if (gamepad1.x) { // transfer
                 outtakeLift1.setPosition(OUTTAKE_LIFT1_DOWN);
                 outtakeLift2.setPosition(OUTTAKE_LIFT2_DOWN);
                 outtakeClaw.setPosition(OUTTAKE_CLAW_OPENED);
+                sleep(250);
                 extension1.setPosition(EXTENSION1_IN);
                 extension2.setPosition(EXTENSION2_IN);
                 intakeLift1.setPosition(INTAKE_LIFT1_UP);
                 intakeLift2.setPosition(INTAKE_LIFT2_UP);
+                sleep(500);
                 intakeStopper.setPosition(INTAKE_STOPPER_DOWN);
                 outtakeClaw.setPosition(OUTTAKE_CLAW_CLOSED);
                 sleep(1000);
@@ -126,31 +140,32 @@ public class Teleop2024 extends LinearOpMode {
             if (gamepad1.y) { // drop or hang
                 outtakeClaw.setPosition(OUTTAKE_CLAW_OPENED);
                 sleep(500);
-                outtakeClaw.setPosition(OUTTAKE_CLAW_CLOSED);
+                outtakeLift1.setPosition(OUTTAKE_LIFT1_DOWN);
+                outtakeLift2.setPosition(OUTTAKE_LIFT2_DOWN);
             }
 
             // dpad - vslide and extension
             if (gamepad1.dpad_up) {
-                vslide1.setPower(-VSLIDE_POWER);
-                vslide2.setPower(VSLIDE_POWER);
-                sleep(VSLIDE_DURATION);
-                vslide1.setPower(0);
-                vslide2.setPower(0);
-            }
-            if (gamepad1.dpad_down) {
                 vslide1.setPower(VSLIDE_POWER);
                 vslide2.setPower(-VSLIDE_POWER);
                 sleep(VSLIDE_DURATION);
                 vslide1.setPower(0);
                 vslide2.setPower(0);
             }
-            if (gamepad1.dpad_left) { // extend in
-                extension1.setPosition(EXTENSION1_IN);
-                extension2.setPosition(EXTENSION2_IN);
+            if (gamepad1.dpad_down) {
+                vslide1.setPower(-VSLIDE_POWER);
+                vslide2.setPower(VSLIDE_POWER);
+                sleep(VSLIDE_DURATION);
+                vslide1.setPower(0);
+                vslide2.setPower(0);
             }
-            if (gamepad1.dpad_right) { // extend out
+            if (gamepad1.dpad_left) { // extend in
                 extension1.setPosition(EXTENSION1_OUT);
                 extension2.setPosition(EXTENSION2_OUT);
+            }
+            if (gamepad1.dpad_right) { // extend out
+                extension1.setPosition(EXTENSION1_IN);
+                extension2.setPosition(EXTENSION2_IN);
             }
 
             // bumper - active intake
