@@ -121,7 +121,7 @@ public class Teleop2024 extends LinearOpMode {
             if (gamepad1.b) { // toggle intake lift
                 FORWARD = !FORWARD;
             }
-            if (gamepad1.x) { // transfer
+            if (gamepad1.x) { // transfer  ,  ps4 control; square
                 outtakeLift1.setPosition(OUTTAKE_LIFT1_DOWN);
                 outtakeLift2.setPosition(OUTTAKE_LIFT2_DOWN);
                 outtakeClaw.setPosition(OUTTAKE_CLAW_OPENED);

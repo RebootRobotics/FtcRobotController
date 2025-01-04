@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 
 
-@TeleOp(name="Teleop202041")
+@TeleOp(name="Teleop20241")
 public class Teleop20241 extends LinearOpMode {
 //    @Override
 
