@@ -1,10 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Robot;
 
+import com.acmerobotics.roadrunner.ftc.Encoder;
+import com.acmerobotics.roadrunner.ftc.OverflowEncoder;
+import com.acmerobotics.roadrunner.ftc.RawEncoder;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -32,6 +37,11 @@ public class Teleop2024 extends LinearOpMode {
         Servo outtakeLift2 = hardwareMap.servo.get("SlidePivot2");
         DcMotor vslide1 = hardwareMap.dcMotor.get("VSlide1");
         DcMotor vslide2 = hardwareMap.dcMotor.get("VSlide2");
+
+        final Encoder par, perp;
+
+        par = new OverflowEncoder(new RawEncoder(hardwareMap.get(DcMotorEx.class, "upperRight")));
+        perp = new OverflowEncoder(new RawEncoder(hardwareMap.get(DcMotorEx.class, "lowerLeft")));
 
         waitForStart();
 
@@ -88,6 +98,11 @@ public class Teleop2024 extends LinearOpMode {
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double frontLeftPower, backLeftPower, frontRightPower, backRightPower;
+
+            telemetry.addData("Odo Par", frontRightMotor.getCurrentPosition());
+            telemetry.addData("Odo Perp", backLeftMotor.getCurrentPosition());
+            telemetry.update();
+            //Error here when doing .getCurrentPosition() btw
 
             if (FORWARD) {
                 frontLeftPower = -((y + x - rx) / denominator);
