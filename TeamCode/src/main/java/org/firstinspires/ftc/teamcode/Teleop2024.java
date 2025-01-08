@@ -75,8 +75,8 @@ public class Teleop2024 extends LinearOpMode {
         double OUTTAKE_CLAW_OPENED = 1;
         double OUTTAKE_LIFT1_UP = 1;
         double OUTTAKE_LIFT2_UP = 0;
-        double OUTTAKE_LIFT1_DOWN = 0.03;
-        double OUTTAKE_LIFT2_DOWN = 0.97;
+        double OUTTAKE_LIFT1_DOWN = 0.06;
+        double OUTTAKE_LIFT2_DOWN = 0.94;
 
         // default positions and init
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -147,6 +147,7 @@ public class Teleop2024 extends LinearOpMode {
                 intakeLift2.setPosition(INTAKE_LIFT2_UP);
                 sleep(500);
                 intakeStopper.setPosition(INTAKE_STOPPER_DOWN);
+                sleep(250);
                 outtakeClaw.setPosition(OUTTAKE_CLAW_CLOSED);
                 sleep(1000);
                 outtakeLift1.setPosition(OUTTAKE_LIFT1_UP);
