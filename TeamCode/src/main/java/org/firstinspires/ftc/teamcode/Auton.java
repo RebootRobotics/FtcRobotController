@@ -131,17 +131,17 @@ public class Auton extends LinearOpMode {
         waitForStart();
 
         // insert auton here
-        frontLeftMotor.setPower(0.5);
-        frontRightMotor.setPower(0.5);
-        backLeftMotor.setPower(0.5);
-        backRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(-0.5);
+        frontRightMotor.setPower(-0.5);
+        backLeftMotor.setPower(-0.5);
+        backRightMotor.setPower(-0.5);
         sleep(650);
         frontLeftMotor.setPower(0);
         frontRightMotor.setPower(0);
         backLeftMotor.setPower(0);
         backRightMotor.setPower(0);
         sleep(100);
-        vslide1.setPower(-1);
+        /*vslide1.setPower(-1);
         vslide2.setPower(1);
         sleep(1000);
         vslide1.setPower(0);
@@ -155,10 +155,27 @@ public class Auton extends LinearOpMode {
         vslide2.setPower(1);
         sleep(1000);
         vslide1.setPower(0);
-        vslide2.setPower(0);
-        frontLeftMotor.setPower(-0.5);
-        frontRightMotor.setPower(-0.5);
+        vslide2.setPower(0);*/
+        frontLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        backRightMotor.setPower(0.5);
+        sleep(300);
+        frontLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
         backLeftMotor.setPower(-0.5);
-        backRightMotor.setPower(-0.5);
+        backRightMotor.setPower(0.5);
+        sleep(300);
+        frontLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        backRightMotor.setPower(0.5);
+        sleep(1000);
+        frontLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        backLeftMotor.setPower(-0.5);
+        backRightMotor.setPower(0.5);
+        sleep(300);
+
     }
 }
