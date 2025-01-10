@@ -71,8 +71,13 @@ public class Auton extends LinearOpMode {
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("upperRight");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("lowerRight");
 
-        Servo intakeWrist = hardwareMap.servo.get("lift1"); // rotate wrist
-        Servo intakeLift = hardwareMap.servo.get("lift2"); // rotate arm
+
+        DcMotor activeIntake = hardwareMap.dcMotor.get("activeIntake"); //Sucks samples in
+        Servo intakeStopper = hardwareMap.servo.get("stopper"); //Stops sample
+        Servo intakeLift1 = hardwareMap.servo.get("lift1"); //Rotates intake
+        Servo intakeLift2 = hardwareMap.servo.get("lift2"); //Rotates intake
+
+        //Servo intakeWrist = hardwareMap.servo.get("lift1"); // rotate wrist
         //Servo intakeClaw = hardwareMap.servo.get("intakeClaw");
         //Servo clawWrist = hardwareMap.servo.get("clawWrist");
         Servo extension1 = hardwareMap.servo.get("extension1");
@@ -86,63 +91,116 @@ public class Auton extends LinearOpMode {
         DcMotor vslide2 = hardwareMap.dcMotor.get("VSlide2");
 
         // define all constants
+        boolean FORWARD = true;
         double SPEED_MODIFIER = 0.6;
+
+        boolean INTAKE_UP = true;
+        double INTAKE_POWER = 0.5;
+        long INTAKE_DURATION = 250;
+        double RELEASE_POWER = 0.8;
+        long RELEASE_DURATION = 250;
+
         double VSLIDE_POWER = 1;
-        long VSLIDE_DURATION = 200;
+        long VSLIDE_DURATION = 100;
 
-        double INTAKE_CLAW_CLOSED = 0.4;
-        double INTAKE_CLAW_OPENED = 0.9;
-        double CLAW_WRIST_STRAIGHT = 0;
-        double CLAW_WRIST_SIDEWAYS = 0.3;
-        double INTAKE_WRIST_DOWN = 0; // lift 1
-        double INTAKE_WRIST_UP = 0.6;
-        double INTAKE_WRIST_READY = 0.42; // lift 2
-        double INTAKE_WRIST_PICKUP = 0.5;
-        double INTAKE_WRIST_TRANSFER = 0.13;
-        double EXTENSION1_IN = 0.1;
-        double EXTENSION1_OUT = 0.7;
-        double EXTENSION2_IN = 0.7;
-        double EXTENSION2_OUT = 0.1;
+        double INTAKE_LIFT1_UP = 0;
+        double INTAKE_LIFT2_UP = 1;
+        double INTAKE_LIFT1_DOWN = 0.6;
+        double INTAKE_LIFT2_DOWN = 0.4;
+        double INTAKE_STOPPER_UP = 0.5;
+        double INTAKE_STOPPER_DOWN = 0;
+        double EXTENSION1_IN = 0.35;
+        double EXTENSION1_OUT = 0;
+        double EXTENSION2_IN = 0.65;
+        double EXTENSION2_OUT = 1;
 
-        double OUTTAKE_CLAW_CLOSED = 0.3;
-        double OUTTAKE_CLAW_OPENED = 0.7;
-        double OUTTAKE_WRIST_DEFAULT = 0.1;
-        double OUTTAKE_LIFT1_UP = 0.95;
-        double OUTTAKE_LIFT2_UP = 0.05;
-        double OUTTAKE_LIFT1_DOWN = 0.15;
-        double OUTTAKE_LIFT2_DOWN = 0.85;
+        double OUTTAKE_CLAW_CLOSED = 0.6;
+        double OUTTAKE_CLAW_OPENED = 1;
+        double OUTTAKE_LIFT1_UP = 1;
+        double OUTTAKE_LIFT2_UP = 0;
+        double OUTTAKE_LIFT1_DOWN = 0.045;
+        double OUTTAKE_LIFT2_DOWN = 0.955;
 
         // default positions and init
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        intakeWrist.setPosition(0.1);
-        intakeLift.setPosition(0);
-        //intakeClaw.setPosition(0.9);
+        intakeLift1.setPosition(INTAKE_LIFT1_UP);
+        intakeLift2.setPosition(INTAKE_LIFT2_UP);
         extension1.setPosition(EXTENSION1_IN);
         extension2.setPosition(EXTENSION2_IN);
 
         outtakeClaw.setPosition(OUTTAKE_CLAW_CLOSED);
-        sleep(500);
-        outtakeLift1.setPosition(OUTTAKE_LIFT1_UP);
-        outtakeLift2.setPosition(OUTTAKE_LIFT2_UP);
-        //outtakeWrist.setPosition(OUTTAKE_WRIST_DEFAULT);
+        outtakeLift1.setPosition(OUTTAKE_LIFT1_DOWN);
+        outtakeLift2.setPosition(OUTTAKE_LIFT2_DOWN);
 
         waitForStart();
 
         // insert auton here
+
+        //Preloaded sample is brought out
+        outtakeLift1.setPosition(OUTTAKE_LIFT1_UP);
+        outtakeLift2.setPosition(OUTTAKE_LIFT2_UP);
+
+        //Robot goes forward
         frontLeftMotor.setPower(0.5);
         frontRightMotor.setPower(0.5);
         backLeftMotor.setPower(0.5);
         backRightMotor.setPower(0.5);
-        //forwards in the code is acc backwards
-        sleep(1500);
+        sleep(1000);
+
+        //Robot Pauses
         frontLeftMotor.setPower(0);
         frontRightMotor.setPower(0);
         backLeftMotor.setPower(0);
         backRightMotor.setPower(0);
         sleep(250);
-        /*vslide1.setPower(-1);
+
+        //Slides go up
+        vslide1.setPower(VSLIDE_POWER);
+        vslide2.setPower(-VSLIDE_POWER);
+        sleep(VSLIDE_DURATION*1.5);
+
+        //Robot comes right up to the submersible
+        frontLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        backRightMotor.setPower(0.5);
+        sleep(500);
+
+        //Slides lowers preloaded specimen onto the bar
+        vslide1.setPower(-VSLIDE_POWER);
+        vslide2.setPower(VSLIDE_POWER);
+        sleep(VSLIDE_DURATION*0.30);
+
+        //Outtake claw lets go of specimen
+
+        outtakeClaw.setPosition(OUTTAKE_CLAW_OPENED);
+        sleep(500);
+        outtakeLift1.setPosition(OUTTAKE_LIFT1_DOWN);
+        outtakeLift2.setPosition(OUTTAKE_LIFT2_DOWN);
+
+        //Backs up
+        frontLeftMotor.setPower(-0.5);
+        frontRightMotor.setPower(-0.5);
+        backLeftMotor.setPower(-0.5);
+        backRightMotor.setPower(-0.5);
+        sleep(400);
+
+        //Slides lower
+        vslide1.setPower(-VSLIDE_POWER);
+        vslide2.setPower(VSLIDE_POWER);
+        sleep(VSLIDE_DURATION);
+
+        //Strafes Left
+        frontLeftMotor.setPower(-0.5);
+        frontRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        backRightMotor.setPower(-0.5);
+        sleep(500);
+
+        /*
+        vslide1.setPower(-1);
         vslide2.setPower(1);
         sleep(1000);
         vslide1.setPower(0);
@@ -156,12 +214,8 @@ public class Auton extends LinearOpMode {
         vslide2.setPower(1);
         sleep(1000);
         vslide1.setPower(0);
-        vslide2.setPower(0);*/
-        frontLeftMotor.setPower(-0.5);
-        frontRightMotor.setPower(-0.5);
-        backLeftMotor.setPower(-0.5);
-        backRightMotor.setPower(-0.5);
-        sleep(400);
+        vslide2.setPower(0);
+
         frontLeftMotor.setPower(0.5);
         frontRightMotor.setPower(-0.5);
         backLeftMotor.setPower(-0.5);
@@ -177,6 +231,7 @@ public class Auton extends LinearOpMode {
         backLeftMotor.setPower(-0.5);
         backRightMotor.setPower(0.5);
         sleep(300);
+        */
 
     }
 }
