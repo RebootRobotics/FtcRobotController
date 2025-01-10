@@ -73,14 +73,14 @@ public class Auton extends LinearOpMode {
 
         Servo intakeWrist = hardwareMap.servo.get("lift1"); // rotate wrist
         Servo intakeLift = hardwareMap.servo.get("lift2"); // rotate arm
-        Servo intakeClaw = hardwareMap.servo.get("intakeClaw");
-        Servo clawWrist = hardwareMap.servo.get("clawWrist");
+        //Servo intakeClaw = hardwareMap.servo.get("intakeClaw");
+        //Servo clawWrist = hardwareMap.servo.get("clawWrist");
         Servo extension1 = hardwareMap.servo.get("extension1");
         Servo extension2 = hardwareMap.servo.get("extension2");
 
         Servo outtakeLift1 = hardwareMap.servo.get("SlidePivot2");
         Servo outtakeLift2 = hardwareMap.servo.get("SlidePivot1");
-        Servo outtakeWrist = hardwareMap.servo.get("LiftWrist");
+        //Servo outtakeWrist = hardwareMap.servo.get("LiftWrist");
         Servo outtakeClaw = hardwareMap.servo.get("VClaw");
         DcMotor vslide1 = hardwareMap.dcMotor.get("VSlide1");
         DcMotor vslide2 = hardwareMap.dcMotor.get("VSlide2");
@@ -118,7 +118,7 @@ public class Auton extends LinearOpMode {
 
         intakeWrist.setPosition(0.1);
         intakeLift.setPosition(0);
-        intakeClaw.setPosition(0.9);
+        //intakeClaw.setPosition(0.9);
         extension1.setPosition(EXTENSION1_IN);
         extension2.setPosition(EXTENSION2_IN);
 
@@ -126,21 +126,22 @@ public class Auton extends LinearOpMode {
         sleep(500);
         outtakeLift1.setPosition(OUTTAKE_LIFT1_UP);
         outtakeLift2.setPosition(OUTTAKE_LIFT2_UP);
-        outtakeWrist.setPosition(OUTTAKE_WRIST_DEFAULT);
+        //outtakeWrist.setPosition(OUTTAKE_WRIST_DEFAULT);
 
         waitForStart();
 
         // insert auton here
-        frontLeftMotor.setPower(-0.5);
-        frontRightMotor.setPower(-0.5);
-        backLeftMotor.setPower(-0.5);
-        backRightMotor.setPower(-0.5);
-        sleep(650);
+        frontLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        backRightMotor.setPower(0.5);
+        //forwards in the code is acc backwards
+        sleep(1500);
         frontLeftMotor.setPower(0);
         frontRightMotor.setPower(0);
         backLeftMotor.setPower(0);
         backRightMotor.setPower(0);
-        sleep(100);
+        sleep(250);
         /*vslide1.setPower(-1);
         vslide2.setPower(1);
         sleep(1000);
@@ -156,23 +157,23 @@ public class Auton extends LinearOpMode {
         sleep(1000);
         vslide1.setPower(0);
         vslide2.setPower(0);*/
+        frontLeftMotor.setPower(-0.5);
+        frontRightMotor.setPower(-0.5);
+        backLeftMotor.setPower(-0.5);
+        backRightMotor.setPower(-0.5);
+        sleep(400);
         frontLeftMotor.setPower(0.5);
-        frontRightMotor.setPower(0.5);
-        backLeftMotor.setPower(0.5);
-        backRightMotor.setPower(0.5);
-        sleep(300);
-        frontLeftMotor.setPower(0.5);
-        frontRightMotor.setPower(0.5);
+        frontRightMotor.setPower(-0.5);
         backLeftMotor.setPower(-0.5);
         backRightMotor.setPower(0.5);
-        sleep(300);
+        sleep(750);
         frontLeftMotor.setPower(0.5);
         frontRightMotor.setPower(0.5);
         backLeftMotor.setPower(0.5);
         backRightMotor.setPower(0.5);
         sleep(1000);
         frontLeftMotor.setPower(0.5);
-        frontRightMotor.setPower(0.5);
+        frontRightMotor.setPower(-0.5);
         backLeftMotor.setPower(-0.5);
         backRightMotor.setPower(0.5);
         sleep(300);

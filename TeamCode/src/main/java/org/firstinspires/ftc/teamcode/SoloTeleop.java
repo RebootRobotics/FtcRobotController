@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name="Teleop2025")
-public class Teleop2024 extends LinearOpMode {
+@TeleOp(name="TeleopSolo")
+public class SoloTeleop extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         // configure all motors and servos
@@ -44,7 +44,7 @@ public class Teleop2024 extends LinearOpMode {
         long RELEASE_DURATION = 250;
 
         double VSLIDE_POWER = 1;
-        long VSLIDE_DURATION = 100;
+        long VSLIDE_DURATION = 50;
 
         double INTAKE_LIFT1_UP = 0;
         double INTAKE_LIFT2_UP = 1;
@@ -121,7 +121,7 @@ public class Teleop2024 extends LinearOpMode {
                 FORWARD = !FORWARD;
             }
             if (gamepad1.x) { // transfer  ,  ps4 control; square
-                FORWARD = false;
+//                FORWARD = false;
                 SPEED_MODIFIER = 0.6;
                 outtakeLift1.setPosition(OUTTAKE_LIFT1_DOWN);
                 outtakeLift2.setPosition(OUTTAKE_LIFT2_DOWN);
@@ -140,7 +140,7 @@ public class Teleop2024 extends LinearOpMode {
                 outtakeLift2.setPosition(OUTTAKE_LIFT2_UP);
             }
             if (gamepad1.y) { // drop or hang
-                FORWARD = true;
+//                FORWARD = true;
                 outtakeClaw.setPosition(OUTTAKE_CLAW_OPENED);
                 sleep(500);
                 outtakeLift1.setPosition(OUTTAKE_LIFT1_DOWN);
