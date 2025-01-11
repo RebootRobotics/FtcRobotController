@@ -57,7 +57,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
 
-@Autonomous(name="Autonomous20241")
+@Autonomous(name="AutonomousOther")
 public class AutonOther extends LinearOpMode {
 
     @Override
@@ -153,13 +153,13 @@ public class AutonOther extends LinearOpMode {
         frontRightMotor.setPower(-0.5);
         backLeftMotor.setPower(-0.5);
         backRightMotor.setPower(0.5);
-        sleep(550);
+        sleep(1750);
 
         frontLeftMotor.setPower(0.5);
         frontRightMotor.setPower(0.5);
         backLeftMotor.setPower(0.5);
         backRightMotor.setPower(0.5);
-        sleep(250);
+        sleep(250); //could change to 225 later
 
         //Robot Pauses
         frontLeftMotor.setPower(0);
@@ -178,7 +178,7 @@ public class AutonOther extends LinearOpMode {
         sleep(400);
         vslide1.setPower(-VSLIDE_POWER);
         vslide2.setPower(VSLIDE_POWER);
-        sleep(300);
+        sleep(200);
         vslide1.setPower(0);
         vslide2.setPower(0);
         sleep(100);
@@ -239,13 +239,32 @@ public class AutonOther extends LinearOpMode {
         frontRightMotor.setPower(0.5);
         backLeftMotor.setPower(0.5);
         backRightMotor.setPower(-0.5);
-        sleep(3400);
+        sleep(1900);
+
+        frontLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        backRightMotor.setPower(0.5);
+        sleep(875);
 
         frontLeftMotor.setPower(-0.5);
-        frontRightMotor.setPower(-0.5);
+        frontRightMotor.setPower(0.5);
         backLeftMotor.setPower(-0.5);
-        backRightMotor.setPower(-0.5);
-        sleep(1000);
+        backRightMotor.setPower(0.5);
+        sleep(50);
+
+        vslide1.setPower(VSLIDE_POWER);
+        vslide2.setPower(-VSLIDE_POWER);
+        sleep(200);
+        vslide1.setPower(0);
+        vslide2.setPower(0);
+        sleep(100);
+
+        frontLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        backRightMotor.setPower(0.5);
+        sleep(520);
 
         //Slides lower
         //vslide1.setPower(VSLIDE_POWER);
