@@ -44,7 +44,7 @@ public class Teleop2024 extends LinearOpMode {
         long RELEASE_DURATION = 250;
 
         double VSLIDE_POWER = 1;
-        long VSLIDE_DURATION = 100;
+        long VSLIDE_DURATION = 50;
 
         double INTAKE_LIFT1_UP = 0;
         double INTAKE_LIFT2_UP = 1;
@@ -61,8 +61,8 @@ public class Teleop2024 extends LinearOpMode {
         double OUTTAKE_CLAW_OPENED = 1;
         double OUTTAKE_LIFT1_UP = 1;
         double OUTTAKE_LIFT2_UP = 0;
-        double OUTTAKE_LIFT1_DOWN = 0.045;
-        double OUTTAKE_LIFT2_DOWN = 0.955;
+        double OUTTAKE_LIFT1_DOWN = 0.055;
+        double OUTTAKE_LIFT2_DOWN = 0.945;
 
         // default positions and init
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
