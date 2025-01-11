@@ -44,7 +44,7 @@ public class Teleop2024 extends LinearOpMode {
         long RELEASE_DURATION = 250;
 
         double VSLIDE_POWER = 1;
-        long VSLIDE_DURATION = 50;
+        long VSLIDE_DURATION = 25;
 
         double INTAKE_LIFT1_UP = 0;
         double INTAKE_LIFT2_UP = 1;
@@ -78,9 +78,9 @@ public class Teleop2024 extends LinearOpMode {
         outtakeLift2.setPosition(OUTTAKE_LIFT2_DOWN);
 
         while (opModeIsActive() & !isStopRequested()) {
-            double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
-            double x = gamepad1.left_stick_x; //* 1.1; // Counteract imperfect strafing
-            double rx = -gamepad1.right_stick_x;
+            double y = -gamepad2.left_stick_y; // Remember, Y stick value is reversed
+            double x = gamepad2.left_stick_x; //* 1.1; // Counteract imperfect strafing
+            double rx = -gamepad2.right_stick_x;
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double frontLeftPower, backLeftPower, frontRightPower, backRightPower;
@@ -97,28 +97,23 @@ public class Teleop2024 extends LinearOpMode {
                 backRightPower = (y + x - rx) / denominator;
             }
 
-            frontLeftMotor.setPower(frontLeftPower*SPEED_MODIFIER);
-            backLeftMotor.setPower(backLeftPower*SPEED_MODIFIER);
-            frontRightMotor.setPower(frontRightPower*SPEED_MODIFIER);
-            backRightMotor.setPower(backRightPower*SPEED_MODIFIER);
+            frontLeftMotor.setPower(frontLeftPower * SPEED_MODIFIER);
+            backLeftMotor.setPower(backLeftPower * SPEED_MODIFIER);
+            frontRightMotor.setPower(frontRightPower * SPEED_MODIFIER);
+            backRightMotor.setPower(backRightPower * SPEED_MODIFIER);
 
             // right buttons
-            if (gamepad1.a) { // pick up
-                INTAKE_UP = !INTAKE_UP;
-                sleep(100);
-                if (INTAKE_UP) {
-                    SPEED_MODIFIER = 0.3;
-                    intakeLift1.setPosition(INTAKE_LIFT1_DOWN);
-                    intakeLift2.setPosition(INTAKE_LIFT2_DOWN);
-                } else {
-                    SPEED_MODIFIER = 0.6;
-                    intakeLift1.setPosition(INTAKE_LIFT1_UP);
-                    intakeLift2.setPosition(INTAKE_LIFT2_UP);
-                }
+            if (gamepad2.a) { // pick up
+                intakeLift1.setPosition(INTAKE_LIFT1_DOWN);
+                intakeLift2.setPosition(INTAKE_LIFT2_DOWN);
+
             }
 
-            if (gamepad1.b) { // toggle intake lift
-                FORWARD = !FORWARD;
+
+            if (gamepad2.b) { // toggle intake lift
+                intakeLift1.setPosition(INTAKE_LIFT1_UP);
+                intakeLift2.setPosition(INTAKE_LIFT2_UP);
+                //FORWARD = !FORWARD;
             }
             if (gamepad1.x) { // transfer  ,  ps4 control; square
                 FORWARD = false;
@@ -139,7 +134,7 @@ public class Teleop2024 extends LinearOpMode {
                 outtakeLift1.setPosition(OUTTAKE_LIFT1_UP);
                 outtakeLift2.setPosition(OUTTAKE_LIFT2_UP);
             }
-            if (gamepad1.y) { // drop or hang
+            if (gamepad2.y) { // drop or hang
                 FORWARD = true;
                 outtakeClaw.setPosition(OUTTAKE_CLAW_OPENED);
                 sleep(500);
@@ -162,23 +157,23 @@ public class Teleop2024 extends LinearOpMode {
                 vslide1.setPower(0);
                 vslide2.setPower(0);
             }
-            if (gamepad1.dpad_left) { // extend in
+            if (gamepad2.dpad_left) { // extend in
                 extension1.setPosition(EXTENSION1_OUT);
                 extension2.setPosition(EXTENSION2_OUT);
             }
-            if (gamepad1.dpad_right) { // extend out
+            if (gamepad2.dpad_right) { // extend out
                 extension1.setPosition(EXTENSION1_IN);
                 extension2.setPosition(EXTENSION2_IN);
             }
 
             // bumper - active intake
-            if (gamepad1.left_bumper) { // intake
+            if (gamepad2.left_bumper) { // intake
                 intakeStopper.setPosition(INTAKE_STOPPER_UP);
                 activeIntake.setPower(INTAKE_POWER);
                 sleep(INTAKE_DURATION);
                 activeIntake.setPower(0);
             }
-            if (gamepad1.right_bumper) { // release
+            if (gamepad2.right_bumper) { // release
                 intakeStopper.setPosition(INTAKE_STOPPER_DOWN);
                 activeIntake.setPower(-RELEASE_POWER);
                 sleep(RELEASE_DURATION);

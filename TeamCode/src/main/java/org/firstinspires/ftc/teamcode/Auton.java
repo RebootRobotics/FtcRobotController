@@ -227,13 +227,13 @@ public class Auton extends LinearOpMode {
         frontRightMotor.setPower(-0.5);
         backLeftMotor.setPower(-0.5);
         backRightMotor.setPower(0.5);
-        sleep(3400);
+        sleep(2800);
 
         frontLeftMotor.setPower(-0.5);
         frontRightMotor.setPower(-0.5);
         backLeftMotor.setPower(-0.5);
         backRightMotor.setPower(-0.5);
-        sleep(1000);
+        sleep(1200);
 
         //Slides lower
         //vslide1.setPower(VSLIDE_POWER);
