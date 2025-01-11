@@ -150,9 +150,16 @@ public class AutonOther extends LinearOpMode {
         sleep(250);
 
         frontLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(-0.5);
+        backLeftMotor.setPower(-0.5);
+        backRightMotor.setPower(0.5);
+        sleep(550);
+
+        frontLeftMotor.setPower(0.5);
         frontRightMotor.setPower(0.5);
         backLeftMotor.setPower(0.5);
         backRightMotor.setPower(0.5);
+        sleep(250);
 
         //Robot Pauses
         frontLeftMotor.setPower(0);
@@ -228,10 +235,10 @@ public class AutonOther extends LinearOpMode {
         backRightMotor.setPower(-0.5);
         sleep(250);
 
-        frontLeftMotor.setPower(0.5);
-        frontRightMotor.setPower(-0.5);
-        backLeftMotor.setPower(-0.5);
-        backRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(-0.5);
+        frontRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        backRightMotor.setPower(-0.5);
         sleep(3400);
 
         frontLeftMotor.setPower(-0.5);
